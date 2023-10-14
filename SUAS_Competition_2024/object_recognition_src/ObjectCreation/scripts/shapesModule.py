@@ -40,19 +40,23 @@ def createQuarterCircles(color):
     )  
 
     img = img.resize((500, 500), 5)
-    img.save(f"shapes\{color}_quartercircle_bottom.png", quality=100)
+
+    img.save(f"shapes\{color}_quartercircle_bottomRight.png", quality=100)
 
     img2 = Image.new("RGBA", (w,h))
     img2 = img.rotate(90, PIL.Image.NEAREST, expand = 1)
-    img2.save(f"shapes\{color}_quartercircle_right.png", quality=100)
+  
+    img2.save(f"shapes\{color}_quartercircle_topRight.png", quality=100)
 
     img3 = Image.new("RGBA", (w,h))
     img3 = img.rotate(180, PIL.Image.NEAREST, expand = 1)
-    img3.save(f"shapes\{color}_quartercircle_top.png", quality=100)
+    
+    img3.save(f"shapes\{color}_quartercircle_topLeft.png", quality=100)
 
     img4 = Image.new("RGBA", (w,h))
     img4 = img.rotate(270, PIL.Image.NEAREST, expand = 1)
-    img4.save(f"shapes\{color}_quartercircle_left.png", quality=100)
+    
+    img4.save(f"shapes\{color}_quartercircle_bottomLeft.png", quality=100)
 
 def createSemiCircles(color):
     w, h = 1000, 1000
