@@ -13,7 +13,7 @@ background = Image.open(rand_bg)
 foreground = Image.open(rand_fg)
 
 # scales down shapes
-foreground = foreground.resize((int(foreground.size[0] * 0.075), int(foreground.size[1] * 0.075)))
+foreground = foreground.resize((int(foreground.size[0] * 0.02), int(foreground.size[1] * 0.02)))
 
 # gets image dimensions
 bg_width, bg_height = background.size
@@ -29,14 +29,14 @@ coords = (random.randint(0, max_x), random.randint(0, max_y))
 now = datetime.datetime.now()
 formatted_now = now.strftime("%f")
 
-for i in range(3):
+for i in range(11):
     new_bg = background.copy()
     new_bg.paste(foreground, coords, foreground)
     # generates unique image name
     new_filename = rand_fg.split("/")[1].split(".")[0] + "_" + rand_bg.split("/")[1].split(".")[0]
     new_filename += str(90 * i) + '_' + str(formatted_now) + ".png"
-    new_bg.save(f'output/{new_filename}', 'PNG')
-    foreground = foreground.transpose(Image.ROTATE_90)
+    new_bg.save(f'C:/Users/joshu/Downloads/combined_images_test/{new_filename}', 'PNG')
+    foreground = foreground.rotate(30)
 
 
 
