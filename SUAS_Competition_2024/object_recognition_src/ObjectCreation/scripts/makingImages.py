@@ -50,6 +50,6 @@ for shape in shapes:
 
         if shape != "semicircle" and shape != "quartercircle":
             img = img.resize((500, 500), 5)
-            img.save(f"shapes/{color}_{shape}.png", quality=100)
+            img.save(f"testImages/{color}_{shape}.png", quality=100)
 
 

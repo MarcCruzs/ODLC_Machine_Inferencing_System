@@ -41,22 +41,22 @@ def createQuarterCircles(color):
 
     img = img.resize((500, 500), 5)
 
-    img.save(f"shapes\{color}_quartercircle_bottomRight.png", quality=100)
+    img.save(f"C:/Users/jcmis/Downloads/School/UAV Lab/GitRepo/SUAS_Competiton/SUAS_Competition_2024/object_recognition_src/ObjectCreation/testImages/{color}_quartercircle_bottomRight.png", quality=100)
 
     img2 = Image.new("RGBA", (w,h))
     img2 = img.rotate(90, PIL.Image.NEAREST, expand = 1)
   
-    img2.save(f"shapes\{color}_quartercircle_topRight.png", quality=100)
+    img2.save(f"C:/Users/jcmis/Downloads/School/UAV Lab/GitRepo/SUAS_Competiton/SUAS_Competition_2024/object_recognition_src/ObjectCreation/testImages/{color}_quartercircle_topRight.png", quality=100)
 
     img3 = Image.new("RGBA", (w,h))
     img3 = img.rotate(180, PIL.Image.NEAREST, expand = 1)
     
-    img3.save(f"shapes\{color}_quartercircle_topLeft.png", quality=100)
+    img3.save(f"C:/Users/jcmis/Downloads/School/UAV Lab/GitRepo/SUAS_Competiton/SUAS_Competition_2024/object_recognition_src/ObjectCreation/testImages/{color}_quartercircle_topLeft.png", quality=100)
 
     img4 = Image.new("RGBA", (w,h))
     img4 = img.rotate(270, PIL.Image.NEAREST, expand = 1)
     
-    img4.save(f"shapes\{color}_quartercircle_bottomLeft.png", quality=100)
+    img4.save(f"C:/Users/jcmis/Downloads/School/UAV Lab/GitRepo/SUAS_Competiton/SUAS_Competition_2024/object_recognition_src/ObjectCreation/testImages/{color}_quartercircle_bottomLeft.png", quality=100)
 
 def createSemiCircles(color):
     w, h = 1000, 1000
@@ -81,19 +81,19 @@ def createSemiCircles(color):
     draw.line([line_start, line_end], fill="black", width=10)  # Line for the flat side's border
     
     img = img.resize((500, 500), 5)
-    img.save(f"shapes\{color}_semicircle_bottom.png", quality=100)
+    img.save(f"C:/Users/jcmis/Downloads/School/UAV Lab/GitRepo/SUAS_Competiton/SUAS_Competition_2024/object_recognition_src/ObjectCreation/testImages/{color}_semicircle_bottom.png", quality=100)
 
     img2 = Image.new("RGBA", (w,h))
     img2 = img.rotate(90, PIL.Image.NEAREST, expand = 1)
-    img2.save(f"shapes\{color}_semicircle_right.png", quality=100)
+    img2.save(f"C:/Users/jcmis/Downloads/School/UAV Lab/GitRepo/SUAS_Competiton/SUAS_Competition_2024/object_recognition_src/ObjectCreation/testImages/{color}_semicircle_right.png", quality=100)
 
     img3 = Image.new("RGBA", (w,h))
     img3 = img.rotate(180, PIL.Image.NEAREST, expand = 1)
-    img3.save(f"shapes\{color}_semicircle_top.png", quality=100)
+    img3.save(f"C:/Users/jcmis/Downloads/School/UAV Lab/GitRepo/SUAS_Competiton/SUAS_Competition_2024/object_recognition_src/ObjectCreation/testImages/{color}_semicircle_top.png", quality=100)
 
     img4 = Image.new("RGBA", (w,h))
     img4 = img.rotate(270, PIL.Image.NEAREST, expand = 1)
-    img4.save(f"shapes\{color}_semicircle_left.png", quality=100)
+    img4.save(f"C:/Users/jcmis/Downloads/School/UAV Lab/GitRepo/SUAS_Competiton/SUAS_Competition_2024/object_recognition_src/ObjectCreation/testImages/{color}_semicircle_left.png", quality=100)
 
 
 
