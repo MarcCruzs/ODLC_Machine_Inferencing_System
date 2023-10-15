@@ -1,4 +1,4 @@
-from PIL import Image
+from PIL import Image, ImageDraw
 import os, random, datetime
 
 BG_PATH = r'C:\Users\joshu\Downloads\s0303\S0303'
@@ -13,7 +13,7 @@ background = Image.open(rand_bg)
 foreground = Image.open(rand_fg)
 
 # scales down shapes
-foreground = foreground.resize((int(foreground.size[0] * 0.02), int(foreground.size[1] * 0.02)))
+foreground = foreground.resize((int(foreground.size[0] * 0.15), int(foreground.size[1] * 0.15)))
 
 # gets image dimensions
 bg_width, bg_height = background.size
@@ -29,14 +29,24 @@ coords = (random.randint(0, max_x), random.randint(0, max_y))
 now = datetime.datetime.now()
 formatted_now = now.strftime("%f")
 
-for i in range(11):
+
+rect_shape =  (0, 0, fg_width + 10, fg_height + 10)
+img = Image.new("RGBA", (fg_width + 10, fg_height + 10), (0,0,0,0))
+rect = ImageDraw.Draw(img)
+rect.rectangle(rect_shape, outline="yellow", width=3)
+rect_coords = (coords[0] - 5, coords[1] - 5)
+
+for i in range(3):
     new_bg = background.copy()
     new_bg.paste(foreground, coords, foreground)
+    new_bg.paste(img, rect_coords, img)
+
     # generates unique image name
     new_filename = rand_fg.split("/")[1].split(".")[0] + "_" + rand_bg.split("/")[1].split(".")[0]
     new_filename += str(90 * i) + '_' + str(formatted_now) + ".png"
     new_bg.save(f'C:/Users/joshu/Downloads/combined_images_test/{new_filename}', 'PNG')
-    foreground = foreground.rotate(30)
+    foreground = foreground.transpose(Image.ROTATE_90)
+    img = img.transpose(Image.ROTATE_90)
 
 
 
