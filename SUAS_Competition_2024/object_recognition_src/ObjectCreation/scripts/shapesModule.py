@@ -1,8 +1,19 @@
 import PIL, math
-from PIL import Image, ImageDraw, ImageColor
+from PIL import (
+    Image,
+    ImageDraw,
+    ImageColor,
+    ImageMorph,
+    ImageFilter,
+    ImagePath,
+    ImageFont,
+)
+
+shapePath = ("D:/targetsWithAlphaNum")
+font_path = r"C:\Users\jcmis\Downloads\School\UAV Lab\fonts\coolvetica condensed rg.otf"
 
 
-def createQuarterCircles(color):
+def createQuarterCircles(color, characterColor, text):
     w, h = 1000, 1000
     radius_outer = 470  # Outermost radius for the border
     radius_inner = radius_outer - 10  # Radius for the inner semicircle
@@ -39,26 +50,30 @@ def createQuarterCircles(color):
         [(495,500), line_end2], fill="black", width=10
     )  
 
-    img = img.resize((500, 500), 5)
+    img1Num = returnShapeWithCharacter(img, "quartercircle", "bottomRight", characterColor,text)
 
-    img.save(f"C:/Users/jcmis/Downloads/School/UAV Lab/GitRepo/SUAS_Competiton/SUAS_Competition_2024/object_recognition_src/ObjectCreation/testImages/{color}_quartercircle_bottomRight.png", quality=100)
+    img1Num.save(f"{shapePath}/{color}_quartercircle_bottomRight_{text}_{characterColor}.png", quality=100)
 
     img2 = Image.new("RGBA", (w,h))
     img2 = img.rotate(90, PIL.Image.NEAREST, expand = 1)
+    img2Num = returnShapeWithCharacter(img2, "quartercircle", "topRight", characterColor,text)
   
-    img2.save(f"C:/Users/jcmis/Downloads/School/UAV Lab/GitRepo/SUAS_Competiton/SUAS_Competition_2024/object_recognition_src/ObjectCreation/testImages/{color}_quartercircle_topRight.png", quality=100)
+    img2Num.save(f"{shapePath}/{color}_quartercircle_topRight_{text}_{characterColor}.png", quality=100)
 
     img3 = Image.new("RGBA", (w,h))
     img3 = img.rotate(180, PIL.Image.NEAREST, expand = 1)
+    img3Num = returnShapeWithCharacter(img3, "quartercircle", "topLeft", characterColor,text)
     
-    img3.save(f"C:/Users/jcmis/Downloads/School/UAV Lab/GitRepo/SUAS_Competiton/SUAS_Competition_2024/object_recognition_src/ObjectCreation/testImages/{color}_quartercircle_topLeft.png", quality=100)
+    img3Num.save(f"{shapePath}/{color}_quartercircle_topLeft_{text}_{characterColor}.png", quality=100)
 
     img4 = Image.new("RGBA", (w,h))
     img4 = img.rotate(270, PIL.Image.NEAREST, expand = 1)
+    img4Num = returnShapeWithCharacter(img4, "quartercircle", "bottomLeft", characterColor,text)
     
-    img4.save(f"C:/Users/jcmis/Downloads/School/UAV Lab/GitRepo/SUAS_Competiton/SUAS_Competition_2024/object_recognition_src/ObjectCreation/testImages/{color}_quartercircle_bottomLeft.png", quality=100)
+    img4Num.save(f"{shapePath}/{color}_quartercircle_bottomLeft_{text}_{characterColor}.png", quality=100)
 
-def createSemiCircles(color):
+
+def createSemiCircles(color, characterColor,text):
     w, h = 1000, 1000
     radius_outer = 470  # Outermost radius for the border
     radius_inner = radius_outer - 10  # Radius for the inner semicircle
@@ -80,20 +95,24 @@ def createSemiCircles(color):
     draw.pieslice(shape_inner, start = 0, end = 180, fill=color)  # Inner semicircle
     draw.line([line_start, line_end], fill="black", width=10)  # Line for the flat side's border
     
-    img = img.resize((500, 500), 5)
-    img.save(f"C:/Users/jcmis/Downloads/School/UAV Lab/GitRepo/SUAS_Competiton/SUAS_Competition_2024/object_recognition_src/ObjectCreation/testImages/{color}_semicircle_bottom.png", quality=100)
+    
+    img1Num = returnShapeWithCharacter(img, "semicircle", "bottom", characterColor,text)
+    img1Num.save(f"{shapePath}/{color}_semicircle_bottom_{text}_{characterColor}.png", quality=100)
 
     img2 = Image.new("RGBA", (w,h))
     img2 = img.rotate(90, PIL.Image.NEAREST, expand = 1)
-    img2.save(f"C:/Users/jcmis/Downloads/School/UAV Lab/GitRepo/SUAS_Competiton/SUAS_Competition_2024/object_recognition_src/ObjectCreation/testImages/{color}_semicircle_right.png", quality=100)
+    img2Num = returnShapeWithCharacter(img2, "semicircle", "bottom", characterColor,text)
+    img2Num.save(f"{shapePath}/{color}_semicircle_right_{text}_{characterColor}.png", quality=100)
 
     img3 = Image.new("RGBA", (w,h))
     img3 = img.rotate(180, PIL.Image.NEAREST, expand = 1)
-    img3.save(f"C:/Users/jcmis/Downloads/School/UAV Lab/GitRepo/SUAS_Competiton/SUAS_Competition_2024/object_recognition_src/ObjectCreation/testImages/{color}_semicircle_top.png", quality=100)
+    img3Num = returnShapeWithCharacter(img3, "semicircle", "bottom", characterColor,text)
+    img3Num.save(f"{shapePath}/{color}_semicircle_top_{text}_{characterColor}.png", quality=100)
 
     img4 = Image.new("RGBA", (w,h))
     img4 = img.rotate(270, PIL.Image.NEAREST, expand = 1)
-    img4.save(f"C:/Users/jcmis/Downloads/School/UAV Lab/GitRepo/SUAS_Competiton/SUAS_Competition_2024/object_recognition_src/ObjectCreation/testImages/{color}_semicircle_left.png", quality=100)
+    img4Num = returnShapeWithCharacter(img4, "semicircle", "bottom", characterColor,text)
+    img4Num.save(f"{shapePath}/{color}_semicircle_left_{text}_{characterColor}.png", quality=100)
 
 
 
@@ -122,7 +141,7 @@ def createRectangle(color):
 # Draw the outermost black rectangle for the border
     draw.rectangle((0, 0, 1000, 1000), fill="black")
 
-    # Draw the inner rectangle with the given color, leaving a 20-pixel border
+
     draw.rectangle((10, 10, 990, 990), fill=color)
 
     return rectangle
@@ -132,7 +151,7 @@ def createCircle(color):
 
     draw = ImageDraw.Draw(img)
     draw.ellipse([(0, 0), (1000, 1000)], fill="black")  # Outermost border
-    draw.ellipse([(10, 10), (990, 990)], fill=color)   # Inner circle leaving a 20-pixel wide border
+    draw.ellipse([(10, 10), (990, 990)], fill=color)  
 
     return img
 
@@ -140,6 +159,7 @@ def replace_white_with_color(image_path, replacement_color):
     # Load the image
     newColor = ImageColor.getrgb(replacement_color)
     img = Image.open(image_path)
+    img = img.convert("RGBA")
     pixels = img.load()
 
     # Define what we consider "white" (you can tweak these values)
@@ -152,6 +172,21 @@ def replace_white_with_color(image_path, replacement_color):
             r, g, b, a = img.getpixel((x, y))
             if r > threshold and g > threshold and b > threshold:
                 pixels[x, y] = newColor + (a,) 
+
+    return img
+
+def replace_all_colors_with_new(image_path, replacement_color):
+    # Load the image
+    newColor = ImageColor.getrgb(replacement_color)
+    img = Image.open(image_path)
+    pixels = img.load()
+
+    width, height = img.size
+    for x in range(width):
+        for y in range(height):
+            r, g, b, a = img.getpixel((x, y))
+            if a > 0:  # Check if pixel is not transparent
+                pixels[x, y] = newColor + (a,)  # Replace only RGB, keep alpha (transparency) the same
 
     return img
 
@@ -184,3 +219,49 @@ def crop_transparent(img):
 
     return cropped_img
 
+def returnShapeWithCharacter(img, shape, orientation, characterColor, text):
+    fontSize = 500
+    Horoffset = 0
+    Veroffset = 10
+    if shape == "quartercircle":
+        fontSize = 400
+        match orientation:
+            case "topLeft":
+                Horoffset = 10
+                Veroffset = 25
+            case "topRight":
+                Horoffset = -30
+                Veroffset = 25
+            case "bottomLeft":
+                Horoffset = 40
+                Veroffset = -15
+            case "bottomRight":
+                Horoffset = -30
+                Veroffset = 15
+            case _:
+                Horoffset = 0
+                Veroffset = 0
+
+
+    img = crop_transparent(img)
+    draw = ImageDraw.Draw(img)
+    # Load a font
+    font = ImageFont.truetype(font_path, size=fontSize)  # Change size as needed
+    shapeText = text  # Numbers as text
+
+    bbox = draw.textbbox((0, 0), shapeText, font=font)
+    text_width = bbox[2] - bbox[0]
+    text_height = bbox[3] - bbox[1]
+
+    half_img_width = img.width / 2
+    half_img_height = img.height / 2
+    
+    
+
+    position = (half_img_width - text_width / 2 + Horoffset, (half_img_height - text_height + Veroffset) )
+
+    # Draw the text onto the image
+    draw.text(position, shapeText, font=font, fill=characterColor) 
+    if shape != "semicircle":
+        img = img.resize((500, 500), 5)
+    return img
