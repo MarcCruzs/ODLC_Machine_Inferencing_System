@@ -1,9 +1,11 @@
 from PIL import Image, ImageDraw
 import os, random, datetime
+import xml.etree.ElementTree as ET
 
 BG_PATH = r'C:\Users\joshu\Downloads\s0303\S0303'
 FG_PATH = r'E:\targetsWithAlphaNum'
 
+# just leave it running and ctrl-c in the command line when done or run it through debugger
 while True:
 
     # gets a random image from each of the folders
@@ -29,8 +31,9 @@ while True:
     bg_width, bg_height = background.size
     fg_width, fg_height = foreground.size
 
-    max_x = bg_width - fg_width
-    max_y = bg_height - fg_height
+    # the + is to make the max's smaller to account for rotational displacement
+    max_x = bg_width - (fg_width + 3)
+    max_y = bg_height - (fg_height + 3)
 
     # gets a random coordinate value that is less than the max
     coords = (random.randint(0, max_x), random.randint(0, max_y))
@@ -39,29 +42,33 @@ while True:
     now = datetime.datetime.now()
     formatted_now = now.strftime("%f")
 
+    # creates outline
+    # rect_shape =  (0, 0, fg_width + 10, fg_height + 10)
+    # img = Image.new("RGBA", (fg_width + 10, fg_height + 10), (0,0,0,0))
+    # rect = ImageDraw.Draw(img)
+    # rect.rectangle(rect_shape, outline="yellow", width=3)
+    # rect_coords = (coords[0] - 5, coords[1] - 5)
 
-    rect_shape =  (0, 0, fg_width + 10, fg_height + 10)
-    img = Image.new("RGBA", (fg_width + 10, fg_height + 10), (0,0,0,0))
-    rect = ImageDraw.Draw(img)
-    rect.rectangle(rect_shape, outline="yellow", width=3)
-    rect_coords = (coords[0] - 5, coords[1] - 5)
+    # foreground.paste(img, (0,0), img)
 
-    for i in range(3):
+    for i in range(12):
+        rotation = i * 30
         new_bg = background.copy()
-        new_bg.paste(foreground, coords, foreground)
-        new_bg.paste(img, rect_coords, img)
+        new_fg = foreground.rotate(rotation, center=(foreground.size[0] / 2, foreground.size[1] / 2), expand=True)
+        # new_bb = img.rotate(rotation, center=(img.size[0] / 2, img.size[1] / 2), expand=True)
+        new_bg.paste(new_fg, coords, new_fg)
+        # new_bg.paste(new_bb, rect_coords, new_bb)
 
         # generates unique image name
         new_filename = rand_fg.split("/")[1].split(".")[0] + "_" + rand_bg.split("/")[1].split(".")[0]
         new_filename += str(90 * i) + '_' + str(formatted_now) + ".png"
         new_bg.save(f'E:\CombinedImages/{new_filename}', 'PNG')
-        foreground = foreground.transpose(Image.ROTATE_90)
-        img = img.transpose(Image.ROTATE_90)
+        # foreground = foreground.transpose(Image.ROTATE_90)
+        # img = img.transpose(Image.ROTATE_90)
 
 
 
-
-    # closes pointers
-    foreground.close()
-    background.close()
+# closes pointers
+foreground.close()
+background.close()
 
