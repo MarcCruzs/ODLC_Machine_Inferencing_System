@@ -10,6 +10,13 @@ while True:
     rand_bg = os.path.join(BG_PATH + '/', random.choice(os.listdir(BG_PATH)))
     rand_fg = os.path.join(FG_PATH + '/', random.choice(os.listdir(FG_PATH)))
 
+    # skips images whose text is same color as shape color
+    image_name = os.path.basename(rand_fg)
+    image_name = image_name.split('.')[0]
+    image_name = image_name.split('_')
+    if image_name[0] == image_name[-1]:
+        print(image_name[0], image_name[-1])
+        continue
     # opens the images
     background = Image.open(rand_bg)
     foreground = Image.open(rand_fg)
