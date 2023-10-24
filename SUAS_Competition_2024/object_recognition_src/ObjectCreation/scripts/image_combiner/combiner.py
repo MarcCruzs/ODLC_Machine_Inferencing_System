@@ -1,12 +1,11 @@
 from PIL import Image, ImageDraw
-import os, random, datetime, keyboard
+import os, random, datetime
 
 BG_PATH = 'E:\\dataset_backgrounds\\UAV-benchmark-M'
 FG_PATH = 'E:\\targetsWithAlphaNum'
 
-# hold escape for a few seconds and it will stop running.
-# it needs to complete the image generation or else it will leave corrupted files
-while (not keyboard.is_pressed("esc")):
+# run in debugger or cmd or something
+while True:
     # gets random image from random subfolder of base path
     rand_subfolder = os.path.join(BG_PATH, random.choice(os.listdir(BG_PATH)))
     rand_bg = os.path.join(rand_subfolder, random.choice(os.listdir(rand_subfolder)))
@@ -25,7 +24,7 @@ while (not keyboard.is_pressed("esc")):
     foreground = Image.open(rand_fg)
 
     # scales down shapes
-    scale_factor = random.uniform(0.035, 0.075) # Range of 3.5% to 10% scaling
+    scale_factor = random.uniform(0.015, 0.03) # Range of 1.5% to 3% scaling
     foreground = foreground.resize((int(foreground.size[0] * scale_factor), int(foreground.size[1] * scale_factor)))
 
     # gets image dimensions
