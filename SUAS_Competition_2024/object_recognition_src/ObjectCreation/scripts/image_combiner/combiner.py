@@ -1,16 +1,14 @@
 from PIL import Image, ImageDraw
 import os, random, datetime
-import xml.etree.ElementTree as ET
 
-BG_PATH = r'C:\Users\joshu\Downloads\s0303\S0303'
-FG_PATH = r'E:\targetsWithAlphaNum'
+BG_PATH = 'E:\\dataset_backgrounds\\UAV-benchmark-M'
+FG_PATH = 'E:\\targetsWithAlphaNum'
 
 # just leave it running and ctrl-c in the command line when done or run it through debugger
 while True:
-
-    # gets a random image from each of the folders
-    rand_bg = os.path.join(BG_PATH + '/', random.choice(os.listdir(BG_PATH)))
-    rand_fg = os.path.join(FG_PATH + '/', random.choice(os.listdir(FG_PATH)))
+    rand_subfolder = os.path.join(BG_PATH, random.choice(os.listdir(BG_PATH)))
+    rand_bg = os.path.join(rand_subfolder, random.choice(os.listdir(rand_subfolder)))
+    rand_fg = os.path.join(FG_PATH, random.choice(os.listdir(FG_PATH)))
 
     # skips images whose text is same color as shape color
     image_name = os.path.basename(rand_fg)
@@ -24,7 +22,7 @@ while True:
     foreground = Image.open(rand_fg)
 
     # scales down shapes
-    scale_factor = random.uniform(0.035, 0.10) # Range of 3.5% to 10% scaling
+    scale_factor = random.uniform(0.035, 0.075) # Range of 3.5% to 10% scaling
     foreground = foreground.resize((int(foreground.size[0] * scale_factor), int(foreground.size[1] * scale_factor)))
 
     # gets image dimensions
@@ -60,9 +58,9 @@ while True:
         # new_bg.paste(new_bb, rect_coords, new_bb)
 
         # generates unique image name
-        new_filename = rand_fg.split("/")[1].split(".")[0] + "_" + rand_bg.split("/")[1].split(".")[0]
+        new_filename = rand_fg.split("\\")[-1].split(".")[0] + "_" + rand_bg.split("\\")[-1].split(".")[0]
         new_filename += str(90 * i) + '_' + str(formatted_now) + ".png"
-        new_bg.save(f'E:\CombinedImages/{new_filename}', 'PNG')
+        new_bg.save(f'E:/CombinedImages/{new_filename}', 'PNG')
         # foreground = foreground.transpose(Image.ROTATE_90)
         # img = img.transpose(Image.ROTATE_90)
 
