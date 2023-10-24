@@ -1,11 +1,13 @@
 from PIL import Image, ImageDraw
-import os, random, datetime
+import os, random, datetime, keyboard
 
 BG_PATH = 'E:\\dataset_backgrounds\\UAV-benchmark-M'
 FG_PATH = 'E:\\targetsWithAlphaNum'
 
-# just leave it running and ctrl-c in the command line when done or run it through debugger
-while True:
+# hold escape for a few seconds and it will stop running.
+# it needs to complete the image generation or else it will leave corrupted files
+while (not keyboard.is_pressed("esc")):
+    # gets random image from random subfolder of base path
     rand_subfolder = os.path.join(BG_PATH, random.choice(os.listdir(BG_PATH)))
     rand_bg = os.path.join(rand_subfolder, random.choice(os.listdir(rand_subfolder)))
     rand_fg = os.path.join(FG_PATH, random.choice(os.listdir(FG_PATH)))
@@ -15,8 +17,9 @@ while True:
     image_name = image_name.split('.')[0]
     image_name = image_name.split('_')
     if image_name[0] == image_name[-1]:
-        print(image_name[0], image_name[-1])
+        # print(image_name[0], image_name[-1])
         continue
+
     # opens the images
     background = Image.open(rand_bg)
     foreground = Image.open(rand_fg)
@@ -29,7 +32,7 @@ while True:
     bg_width, bg_height = background.size
     fg_width, fg_height = foreground.size
 
-    # the + is to make the max's smaller to account for rotational displacement
+    # sets boundaries to prevent image from going outside the view
     max_x = bg_width - (fg_width + 3)
     max_y = bg_height - (fg_height + 3)
 
@@ -40,6 +43,9 @@ while True:
     now = datetime.datetime.now()
     formatted_now = now.strftime("%f")
 
+
+    # bounding box code
+
     # creates outline
     # rect_shape =  (0, 0, fg_width + 10, fg_height + 10)
     # img = Image.new("RGBA", (fg_width + 10, fg_height + 10), (0,0,0,0))
@@ -49,24 +55,15 @@ while True:
 
     # foreground.paste(img, (0,0), img)
 
+    # creates 12 images, each rotated 30 degrees more than the previous
     for i in range(12):
         rotation = i * 30
         new_bg = background.copy()
         new_fg = foreground.rotate(rotation, center=(foreground.size[0] / 2, foreground.size[1] / 2), expand=True)
-        # new_bb = img.rotate(rotation, center=(img.size[0] / 2, img.size[1] / 2), expand=True)
         new_bg.paste(new_fg, coords, new_fg)
-        # new_bg.paste(new_bb, rect_coords, new_bb)
 
         # generates unique image name
         new_filename = rand_fg.split("\\")[-1].split(".")[0] + "_" + rand_bg.split("\\")[-1].split(".")[0]
         new_filename += str(90 * i) + '_' + str(formatted_now) + ".png"
         new_bg.save(f'E:/CombinedImages/{new_filename}', 'PNG')
-        # foreground = foreground.transpose(Image.ROTATE_90)
-        # img = img.transpose(Image.ROTATE_90)
-
-
-
-# closes pointers
-foreground.close()
-background.close()
 
