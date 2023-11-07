@@ -1,8 +1,8 @@
 from PIL import Image, ImageDraw
 import os, random, datetime
 
-BG_PATH = 'E:\\dataset_backgrounds\\UAV-benchmark-M'
-FG_PATH = 'E:\\targetsWithAlphaNum'
+BG_PATH = 'E:\\2023\\synthetic_data_collection\\background'
+FG_PATH = 'E:\\2023\\synthetic_data_collection\\targetsWithAlphaNum'
 
 # run in debugger or cmd or something
 while True:
@@ -64,5 +64,5 @@ while True:
         # generates unique image name
         new_filename = rand_fg.split("\\")[-1].split(".")[0] + "_" + rand_bg.split("\\")[-1].split(".")[0]
         new_filename += str(90 * i) + '_' + str(formatted_now) + ".png"
-        new_bg.save(f'E:/CombinedImages/{new_filename}', 'PNG')
+        new_bg.save(f'E:\\2023\\synthetic_data_collection\\combined_images\\{new_filename}', 'PNG')
 
