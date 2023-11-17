@@ -1,61 +1,69 @@
 from PIL import Image, ImageDraw
-import os, random, datetime
+import os, random, datetime, string, math
 
-BG_PATH = 'E:\\2023\\synthetic_data_collection\\background'
-FG_PATH = 'E:\\2023\\synthetic_data_collection\\targetsWithAlphaNum'
+BG_PATH = "E:\\2023\\synthetic_data_collection\\background"
+FG_PATH = "E:\\2023\\circles_only"
+
+SHAPE_YOLO_CLASS_NUMBERS = {
+    'star': 0, 'cross': 1, 'pentagon': 2, 'triangle': 3, 'rectangle': 4, 'quartercircle': 5,
+    'semicircle': 6, 'circle': 7 
+}
+
+# manually tweaked and tested with 2 people to find minimum scaling factor that is still human readable
+SCALING_CONSTANTS = {
+    'star': 0.045, 'cross': 0.0275, 'pentagon': 0.035, 'triangle': 0.035, 'rectangle': 0.0275,
+    'quartercircle': 0.0275, 'semicircle': 0.02125, 'circle': 0.02625     
+}
 
 def get_scaling(name):
     upper = 0.05
     lower = 0.45
 
-    name = name.split('_')[1]
+    name = name.split("_")[1]
 
-    match name:
-        case "star":
-            lower = 0.045
-        case "cross":
-            lower = 0.0275
-        case "pentagon":
-            lower = 0.035
-        case "triangle":
-            lower = 0.035
-        case "rectangle":
-            lower = 0.0275
-        case "quartercircle":
-            lower = 0.0275
-        case "semicircle":
-            lower = 0.02125
-        case "circle":
-            lower = 0.0225
+    lower = SCALING_CONSTANTS[name]
     return random.uniform(lower, upper)
 
+
 def add_bounding_box(im, color, margin=5):
-    new_im = Image.new('RGBA', (fg_width + 2*margin, fg_height + 2*margin), (0, 0, 0, 0)) 
+    new_im = Image.new(
+        "RGBA", (im.size[0] + 2 * margin, im.size[1] + 2 * margin), (0, 0, 0, 0)
+    )
     new_im.paste(im, (margin, margin))
     w, h = new_im.size
 
-    draw = ImageDraw.Draw(new_im)
-    draw.line((0, 0, 0, h), fill=color, width=3)
-    draw.line((w, 0, w, h), fill=color, width=3)
-    draw.line((0, 0, w, 0), fill=color, width=3)
-    draw.line((0, h, w, h), fill=color, width=3)
+    # draw = ImageDraw.Draw(new_im)
+    # draw.line((0, 0, 0, h), fill=color, width=3)
+    # draw.line((w, 0, w, h), fill=color, width=3)
+    # draw.line((0, 0, w, 0), fill=color, width=3)
+    # draw.line((0, h, w, h), fill=color, width=3)
     return new_im
 
-# run in debugger or cmd or something
-for i in range(1):
-    # gets random image from random subfolder of base path
-    rand_subfolder = os.path.join(BG_PATH, random.choice(os.listdir(BG_PATH)))
-    rand_bg = os.path.join(rand_subfolder, random.choice(os.listdir(rand_subfolder)))
-    rand_fg = os.path.join(FG_PATH, random.choice(os.listdir(FG_PATH)))
 
+def get_random_alphanumeric_string(length):
+    letters_and_digits = string.ascii_uppercase + string.digits
+    result_str = "".join(random.choice(letters_and_digits) for i in range(length))
+    return result_str
+
+
+def get_random_color():
+    colors = ["white", "black", "red", "blue", "green", "purple", "brown", "orange"]
+    return random.choice(colors)
+
+# run in debugger or cmd or something
+for file in os.listdir(FG_PATH):
+    # gets random image from random subfolder of base path
+    # rand_subfolder = os.path.join(BG_PATH, random.choice(os.listdir(BG_PATH)))
+    # rand_bg = os.path.join(rand_subfolder, random.choice(os.listdir(rand_subfolder)))
+    # rand_fg = os.path.join(FG_PATH, random.choice(os.listdir(FG_PATH)))
     rand_bg = "E:\\2023\\synthetic_data_collection\\background\\a000\\Video_Breakdown43281.png"
-    rand_fg = "E:\\2023\\synthetic_data_collection\\targetsWithAlphaNum\\blue_circle_X_orange.png"
+    rand_fg = os.path.join(FG_PATH, file)
+
     # skips images whose text is same color as shape color
     img_name = os.path.basename(rand_fg)
-    image_name = img_name.split('.')[0]
-    image_name = image_name.split('_')
+    image_name = img_name.split(".")[0]
+    image_name = image_name.split("_")
     if image_name[0] == image_name[-1]:
-        # print(image_name[0], image_name[-1])
         continue
 
     # opens the images
@@ -63,9 +71,14 @@ for i in range(1):
     foreground = Image.open(rand_fg)
 
     # scales down shapes
-    # scale_factor = random.uniform(0.025, 0.04)
     scale_factor = get_scaling(os.path.basename(img_name))
-    foreground = foreground.resize((int(foreground.size[0] * scale_factor), int(foreground.size[1] * scale_factor)), resample=Image.BILINEAR)
+    foreground = foreground.resize(
+        (
+            int(foreground.size[0] * scale_factor),
+            int(foreground.size[1] * scale_factor),
+        ),
+        resample=Image.BILINEAR,
+    )
 
     # gets image dimensions
     bg_width, bg_height = background.size
@@ -81,17 +94,42 @@ for i in range(1):
     now = datetime.datetime.now()
     formatted_now = now.strftime("%f")
 
-    foreground = add_bounding_box(foreground, 'Yellow')
+    foreground = add_bounding_box(foreground, "Yellow")
+    upper_left = coords
+    lower_right = (coords[0] + foreground.size[0], coords[1] + foreground.size[1])
+    box_coords = upper_left + lower_right
 
     # creates 12 images, each rotated 30 degrees more than the previous
-    for i in range(12):
-        rotation = i * 30
+    width, height = foreground.size
+    for j in range(12):
+        rotation = j * 30
         new_bg = background.copy()
         new_fg = foreground.rotate(rotation, expand=True, resample=Image.BICUBIC)
         new_bg.paste(new_fg, coords, new_fg)
-
+        fg_center = (coords[0] + new_fg.size[0] / 2, coords[1] + new_fg.size[1] / 2)
         # generates unique image name
-        new_filename = rand_fg.split("\\")[-1].split(".")[0] + "_" + rand_bg.split("\\")[-1].split(".")[0]
-        new_filename += str(90 * i) + '_' + str(formatted_now) + ".png"
-        new_bg.save(f'E:\\2023\\synthetic_data_collection\\combined_images\\{new_filename}', 'PNG')
+        new_filename = (
+            rand_fg.split("\\")[-1].split(".")[0]
+            + "_"
+            + rand_bg.split("\\")[-1].split(".")[0]
+        )
+        coord_file = new_filename + '-' + str(rotation) + "_" + str(formatted_now) + ".txt"
+        new_filename += '-' + str(rotation) + "_" + str(formatted_now) + ".png"
+        new_bg.save(
+            f"E:\\2023\\synthetic_data_collection\\combined_images\\{new_filename}", "PNG"
+        )
+        with open(
+            f"E:\\2023\\synthetic_data_collection\\combined_images\\{coord_file}", "w"
+        ) as f:
+            name = os.path.basename(img_name).split("_")[1]
+            res = str(SHAPE_YOLO_CLASS_NUMBERS[name]) + ' ' + str(fg_center[0]/bg_width) + ' ' + str(fg_center[1]/bg_height) + ' '
+            res += str(width/bg_width) + ' ' + str(height/bg_height)
+            f.write(res)
+print("Done")
 
+
+# TODO: implement what marc said, shown below
+'''
+Marc was basically saying that of that super chinese dataset he gave me, find one that is 90 feet in the air
+and get a scaling for that, then get an error margin, so it would be like 0.05 +- 0.02 or something
+'''
