@@ -1,5 +1,6 @@
 import cv2
 
+# use pre-defined rgb values for SUAS-specified colors
 COLORS = {
     "red": (255, 0, 0), 
     "green": (0, 255, 0), 
