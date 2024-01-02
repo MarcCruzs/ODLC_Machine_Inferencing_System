@@ -4,7 +4,7 @@
 
 The script sets two paths for the background and foreground images, respectively, using the variables BG_PATH and FG_PATH. These paths are hardcoded to specific directories located on an external harddrive
 
-The script then enters a continuosly running loop. Within the loop, it selects a random subfolder and image from the background path using the os module, and a random image from the foreground path using the random module.
+The script then iterates over all the foreground images. Within the loop, it selects a random subfolder and image from the background path using the os module, and a random image from the foreground path using the random module.
 
 The script checks if the text color of the foreground image is the same as the shape color. If it is, the loop skips that image. If not, it opens the background and foreground images using the Image module.
 
