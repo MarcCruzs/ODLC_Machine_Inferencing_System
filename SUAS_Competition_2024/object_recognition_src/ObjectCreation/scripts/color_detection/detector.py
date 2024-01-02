@@ -14,35 +14,20 @@ COLORS = {
 }
 
 
-# def get_dominant_colors(pil_img, palette_size=16, num_colors=4):
-#     # Resize image to speed up processing
-#     img = pil_img.copy()
-#     img.thumbnail((100, 100))
+def get_dominant_colors(
+    pil_img: Image, palette_size: int = 16, max_colors: int = 6
+) -> list:
+    """Gets the dominant colors from an image. Makes use of K-Nearest Neighbors Algorithm that
+    Pillow uses internally its Palette function.
 
-#     # Reduce colors (uses k-means internally)
-#     paletted = img.convert("P", palette=Image.ADAPTIVE, colors=palette_size)
+    Args:
+        pil_img (Image): Pillow Image
+        palette_size (int, optional): Number of colors it should detect. Defaults to 16.
+        max_colors (int, optional): Number of colors returned. Defaults to 6.
 
-#     # Find the color that occurs most often
-#     palette = paletted.getpalette()
-#     color_counts = sorted(paletted.getcolors(), reverse=True)
-
-#     total_pixels = img.size[0] * img.size[1]
-#     dominant_colors = []
-#     for i in range(num_colors):
-#         palette_index = color_counts[i][1]
-#         color_count = color_counts[i][0]
-#         color_percentage = (color_count / total_pixels) * 100
-#         dominant_colors.append(
-#             {
-#                 "color": palette[palette_index * 3 : palette_index * 3 + 3],
-#                 "percentage": color_percentage,
-#             }
-#         )
-
-#     return dominant_colors
-
-
-def get_dominant_colors(pil_img, palette_size=16, max_colors=6):
+    Returns:
+        list: List of tuples containing dominant color rgb value and a dominance percentage
+    """
     # Resize image to speed up processing
     img = pil_img.copy()
     img.thumbnail((200, 200))
@@ -67,17 +52,18 @@ def get_dominant_colors(pil_img, palette_size=16, max_colors=6):
     return dominant_colors
 
 
-def vid2rgb(event, x, y, flags, param):
-    if event == cv2.EVENT_MOUSEMOVE:
-        colorsBGR = image[y, x]
-        colorsRGB = tuple(reversed(colorsBGR))
-        color_name = closest_color(colorsRGB, COLORS)
-        print(
-            f"At, ({x},{y}), the closest color to RGB value {colorsRGB} is **{color_name}**."
-        )
+def closest_color(requested_color: list) -> str:
+    """This function gets the closest color name to an rgb value. For example:
+    we know rgb(0,0,0) is black and rgb(0,0,255) is blue, if we get an unknown
+    rgb value, this function would get the closest corresponding color name based
+    on a pre-defined list of SUAS-allowed colors.
 
+    Args:
+        requested_color (list): RGB value
 
-def closest_color(requested_color):
+    Returns:
+        String: Corresponding color name for the RGB value
+    """
     min_colors = {}
     for color_name, color_rgb in COLORS.items():
         rd = (color_rgb[0] - requested_color[0]) ** 2
@@ -89,7 +75,7 @@ def closest_color(requested_color):
 
 if __name__ == "__main__":
     image = Image.open(
-        r"SUAS_Competition_2024\object_recognition_src\ObjectCreation\testImages\blue_pentagon_M_purple.png"
+        r"SUAS_Competition_2024\object_recognition_src\ObjectCreation\testImages\angle1_shape1_color1_letter1.png"
     )
     top_colors = get_dominant_colors(image)
     print(top_colors)
@@ -100,13 +86,3 @@ if __name__ == "__main__":
             print("Shape color:", closest_color(top_color))
         else:
             print("Text color:", closest_color(top_color))
-
-    # cv2.namedWindow("ColorDetection")
-    # cv2.setMouseCallback("ColorDetection", vid2rgb)
-
-    # while 1:
-    #     cv2.imshow("ColorDetection", image)
-    #     if cv2.waitKey(0):
-    #         break
-
-    # cv2.destroyAllWindows()
