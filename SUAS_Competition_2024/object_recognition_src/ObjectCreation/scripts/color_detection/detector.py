@@ -1,5 +1,5 @@
 from PIL import Image
-import cv2
+from matplotlib import pyplot as plt
 
 # use pre-defined rgb values for SUAS-specified colors
 COLORS = {
@@ -17,7 +17,7 @@ COLORS = {
 def get_dominant_colors(
     pil_img: Image, palette_size: int = 16, max_colors: int = 6
 ) -> list:
-    """Gets the dominant colors from an image. Makes use of K-Nearest Neighbors Algorithm that
+    """Gets the dominant colors from an image. Makes use of K-Means Algorithm that
     Pillow uses internally its Palette function.
 
     Args:
@@ -44,7 +44,7 @@ def get_dominant_colors(
     for i in range(max_colors):
         palette_index = color_counts[i][1]
         color_count = color_counts[i][0]
-        color_percentage = color_count / total_pixels
+        color_percentage = round(color_count / total_pixels, 4)
         color = palette[palette_index * 3 : palette_index * 3 + 3]
         if color not in [c[0] for c in dominant_colors]:  # Skip adding duplicate colors
             dominant_colors.append((color, color_percentage))
@@ -77,12 +77,26 @@ if __name__ == "__main__":
     image = Image.open(
         r"SUAS_Competition_2024\object_recognition_src\ObjectCreation\testImages\angle1_shape1_color1_letter1.png"
     )
-    top_colors = get_dominant_colors(image)
-    print(top_colors)
-    for top_color, dominance in top_colors:
-        if dominance < 0.01:
-            continue
-        if dominance > 0.5:
-            print("Shape color:", closest_color(top_color))
-        else:
-            print("Text color:", closest_color(top_color))
+
+    width, height = image.size
+    left = width * 0.25
+    top = height * 0.25
+    right = width * 0.75
+    bottom = height * 0.75
+
+    # Isolate shape and text
+    cropped = image.crop((left, top, right, bottom))
+    # cropped.show()
+
+    top_colors = get_dominant_colors(cropped)
+    # print(top_colors)
+    color_values = [top_colors[i][0] for i in range(len(top_colors))]
+    color_labels = [
+        f"{closest_color(top_colors[i][0])}\n{top_colors[i][1]}"
+        for i in range(len(top_colors))
+    ]
+
+    plt.imshow([color_values])
+    plt.xticks(range(len(color_labels)), color_labels)
+    plt.show()
+    plt.show()
