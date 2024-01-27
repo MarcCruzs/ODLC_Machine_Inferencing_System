@@ -5,7 +5,7 @@ import argparse
 # use pre-defined rgb values for SUAS-specified colors
 COLORS = {
     "red": (255, 0, 0),
-    "green": (44, 91, 48),
+    "green": (0, 255, 0),
     "blue": (0, 0, 255),
     "black": (0, 0, 0),
     "purple": (128, 0, 128),
@@ -88,14 +88,13 @@ if __name__ == "__main__":
     image = Image.open(args.ImagePath)
 
     width, height = image.size
-    left = width * 0.25
-    top = height * 0.25
-    right = width * 0.75
-    bottom = height * 0.75
+    left = width * 0.3
+    top = height * 0.3
+    right = width * 0.7
+    bottom = height * 0.7
 
     # Isolate shape and text
     cropped = image.crop((left, top, right, bottom))
-    # cropped.show()
 
     top_colors = get_dominant_colors(cropped, max_colors=3)
     print(top_colors)
@@ -105,7 +104,15 @@ if __name__ == "__main__":
         for i in range(len(top_colors))
     ]
 
+    # Show cropped image
+    plt.subplot(1, 2, 1)
+    plt.imshow(cropped)
+    plt.title("Cropped Image")
+
+    # Show color plot
+    plt.subplot(1, 2, 2)
     plt.imshow([color_values])
     plt.xticks(range(len(color_labels)), color_labels)
-    plt.show()
+    plt.title("Dominant Colors")
+
     plt.show()
