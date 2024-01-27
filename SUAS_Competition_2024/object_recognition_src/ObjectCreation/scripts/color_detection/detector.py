@@ -1,10 +1,11 @@
 from PIL import Image
 from matplotlib import pyplot as plt
+import argparse
 
 # use pre-defined rgb values for SUAS-specified colors
 COLORS = {
     "red": (255, 0, 0),
-    "green": (0, 255, 0),
+    "green": (44, 91, 48),
     "blue": (0, 0, 255),
     "black": (0, 0, 0),
     "purple": (128, 0, 128),
@@ -74,9 +75,17 @@ def closest_color(requested_color: list) -> str:
 
 
 if __name__ == "__main__":
-    image = Image.open(
-        r"SUAS_Competition_2024\object_recognition_src\ObjectCreation\testImages\angle1_shape1_color1_letter1.png"
+    parser = argparse.ArgumentParser(description="Process an Image file.")
+    parser.add_argument(
+        "ImagePath", metavar="path", type=str, help="the path to an image file"
     )
+
+    args = parser.parse_args()
+    if args.ImagePath is None:
+        print("Please provide the path to an image file.")
+        exit()
+
+    image = Image.open(args.ImagePath)
 
     width, height = image.size
     left = width * 0.25
@@ -88,8 +97,8 @@ if __name__ == "__main__":
     cropped = image.crop((left, top, right, bottom))
     # cropped.show()
 
-    top_colors = get_dominant_colors(cropped)
-    # print(top_colors)
+    top_colors = get_dominant_colors(cropped, max_colors=3)
+    print(top_colors)
     color_values = [top_colors[i][0] for i in range(len(top_colors))]
     color_labels = [
         f"{closest_color(top_colors[i][0])}\n{top_colors[i][1]}"
