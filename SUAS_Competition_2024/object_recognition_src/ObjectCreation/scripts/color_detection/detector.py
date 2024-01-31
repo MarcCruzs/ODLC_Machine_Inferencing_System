@@ -1,7 +1,8 @@
+import time
+startTime = time.time()
 from PIL import Image
 from matplotlib import pyplot as plt
 import argparse, json
-import time
 import os.path
 
 # use pre-defined rgb values for SUAS-specified colors
@@ -171,6 +172,9 @@ if __name__ == "__main__":
             innerJSON["TEXT_COLOR"] = color
 
     write_json(innerJSON, args.Timestamp)
+
+    executionTime = (time.time() - startTime)
+    print('\nExecution time in seconds: ' + str(executionTime))
 
     # Show cropped image
     plt.subplot(1, 2, 1)
