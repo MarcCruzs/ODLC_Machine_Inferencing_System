@@ -89,7 +89,7 @@ being the file, if not, it will break
 def write_json(
     new_data,
     timestamp,
-    filename="SUAS_Competition_2024/object_recognition_src/ObjectCreation/scripts/color_detection/colorOutputs.json",
+    filename="colorOutputs.json",
 ):
     with open(filename, "r+") as file:
         # First we load existing data into a dict.
