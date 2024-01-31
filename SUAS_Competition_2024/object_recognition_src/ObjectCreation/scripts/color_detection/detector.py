@@ -6,10 +6,10 @@ import os.path
 
 # use pre-defined rgb values for SUAS-specified colors
 COLORS = {
-    "red": (255, 0, 0),
+    "red": (128, 0, 0),
     "green": (0, 128, 0),
-    "blue": (0, 0, 255),
-    "black": (0, 0, 0),
+    "blue": (0, 0, 128),
+    "black": (-50, -50, -50),
     "purple": (128, 0, 128),
     "white": (255, 255, 255),
     "orange": (255, 165, 0),
@@ -84,8 +84,10 @@ JSON file must be predefined with
 }
 being the file, if not, it will break
 """
-def write_json(new_data, timestamp, filename='colorOutputs.json'):
-    with open(filename,'r+') as file:
+
+
+def write_json(new_data, timestamp, filename="colorOutputs.json"):
+    with open(filename, "r+") as file:
         # First we load existing data into a dict.
         file_data = json.load(file)
         # Join new_data with file_data inside emp_details
@@ -93,12 +95,10 @@ def write_json(new_data, timestamp, filename='colorOutputs.json'):
         # Sets file's current position at offset.
         file.seek(0)
         # convert back to json.
-        json.dump(file_data, file, indent = 4)
- 
+        json.dump(file_data, file, indent=4)
 
 
 if __name__ == "__main__":
-
     """
     There are now 3 positional arguments
 
@@ -107,7 +107,7 @@ if __name__ == "__main__":
     We are essentially creating a timestamp key based data structure for the colorOutputs.json.
     This is because if this model and the text classification are to run at the same time,
     how we can get the outputs of both of them to match with one another? What if one finishes before the
-    other? 
+    other?
 
     This may require another script to get the outputs of both models and then finally append them to
     a final shape.
@@ -115,7 +115,7 @@ if __name__ == "__main__":
     This model also takes the classified shape and appends it to the json file.
 
     """
-    
+
     parser = argparse.ArgumentParser(description="Process an Image file.")
     parser.add_argument(
         "ImagePath", metavar="path", type=str, help="the path to an image file"
@@ -125,9 +125,7 @@ if __name__ == "__main__":
         "Shape", metavar="shape name", type=str, help="the name of the shape"
     )
 
-    parser.add_argument(
-        "Timestamp", metavar="time", type=str, help="the current time"
-    )
+    parser.add_argument("Timestamp", metavar="time", type=str, help="the current time")
 
     args = parser.parse_args()
 
@@ -145,9 +143,7 @@ if __name__ == "__main__":
 
     image = Image.open(args.ImagePath)
 
-    innerJSON = {
-        "SHAPE": args.Shape
-    }
+    innerJSON = {"SHAPE": args.Shape}
 
     width, height = image.size
     left = width * 0.3
@@ -162,22 +158,19 @@ if __name__ == "__main__":
     print(top_colors)
     color_values = [top_colors[i][0] for i in range(len(top_colors))]
 
-    #create list of colors while at the same time appending them to a json file
-    color_labels=[]
-    
+    # create list of colors while at the same time appending them to a json file
+    color_labels = []
+
     for i in range(len(top_colors)):
         color = closest_color(top_colors[i][0])
         color_labels.append(f"{color}\n{top_colors[i][1]}")
-        
+
         if i == 0:
             innerJSON["SHAPE_COLOR"] = color
         elif i == 1:
             innerJSON["TEXT_COLOR"] = color
 
-
     write_json(innerJSON, args.Timestamp)
-
-
 
     # Show cropped image
     plt.subplot(1, 2, 1)
@@ -190,7 +183,3 @@ if __name__ == "__main__":
     plt.xticks(range(len(color_labels)), color_labels)
     plt.title("Dominant Colors")
     plt.show()
-
-
-
-
