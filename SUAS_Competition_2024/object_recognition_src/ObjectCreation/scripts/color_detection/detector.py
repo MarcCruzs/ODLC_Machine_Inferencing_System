@@ -8,7 +8,7 @@ import os.path
 COLORS = {
     "red": (255, 0, 0),
     "green": (0, 128, 0),
-    "blue": (0, 0, 255),
+    "blue": (0, 0, 128),
     "black": (-50, -50, -50),
     "purple": (128, 0, 128),
     "white": (255, 255, 255),
@@ -86,7 +86,11 @@ being the file, if not, it will break
 """
 
 
-def write_json(new_data, timestamp, filename="colorOutputs.json"):
+def write_json(
+    new_data,
+    timestamp,
+    filename="SUAS_Competition_2024/object_recognition_src/ObjectCreation/scripts/color_detection/colorOutputs.json",
+):
     with open(filename, "r+") as file:
         # First we load existing data into a dict.
         file_data = json.load(file)
