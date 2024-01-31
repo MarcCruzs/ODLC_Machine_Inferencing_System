@@ -6,9 +6,9 @@ import os.path
 
 # use pre-defined rgb values for SUAS-specified colors
 COLORS = {
-    "red": (128, 0, 0),
+    "red": (255, 0, 0),
     "green": (0, 128, 0),
-    "blue": (0, 0, 128),
+    "blue": (0, 0, 255),
     "black": (-50, -50, -50),
     "purple": (128, 0, 128),
     "white": (255, 255, 255),
