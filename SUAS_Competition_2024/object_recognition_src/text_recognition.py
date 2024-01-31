@@ -30,7 +30,7 @@ image_path = "E:\\SUAS\\targetsWithAlphaNum/black_pentagon_2_brown.png"
 try:
     image = Image.open(image_path)
     plt.imshow(image)
-    plt.axis('on')
+    plt.axis("on")
     plt.show()
 except Exception as e:
     print(f"Error opening image: {e}")
@@ -44,7 +44,7 @@ else:
 
 
 try:
-    ocrReader = easyocr.Reader(['en'], gpu=True)
+    ocrReader = easyocr.Reader(["en"], gpu=True)
     result = ocrReader.readtext(image_path)
     print(result)
 
@@ -56,7 +56,9 @@ try:
 
         image2 = cv2.imread(image_path)
         image2 = cv2.rectangle(image2, top_left, bottom_right, (0, 255, 0), 5)
-        image2 = cv2.putText(image2, text, top_left, font, 1, (255, 255, 2555), 2, cv2.LINE_AA)
+        image2 = cv2.putText(
+            image2, text, top_left, font, 1, (255, 255, 2555), 2, cv2.LINE_AA
+        )
         plt.imshow(image2)
         plt.show()
 
