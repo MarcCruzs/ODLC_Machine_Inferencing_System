@@ -17,11 +17,32 @@ COLORS = {
 }
 
 
+def reducer(pil_img: Image) -> Image:
+    if pil_img.mode != "RGB":
+        pil_img = pil_img.convert("RGB")
+    pal = {
+        "red": (255, 0, 0),
+        "green": (0, 255, 0),
+        "white": (255, 255, 255),
+        "blue": (0, 0, 255),
+        "black": (0, 0, 0),
+        "purple": (128, 0, 128),
+        "orange": (255, 165, 0),
+        "brown": (150, 75, 0),
+    }
+    palette = [val for rgb in pal.values() for val in rgb]
+    paletted_img = Image.new("P", pil_img.size)
+    paletted_img.putpalette(palette)
+
+    quantized = pil_img.quantize(colors=len(palette), palette=paletted_img, method=1)
+    return quantized
+
+
 def get_dominant_colors(
     pil_img: Image, palette_size: int = 16, max_colors: int = 6
 ) -> list:
     """Gets the dominant colors from an image. Makes use of K-Means Algorithm that
-    Pillow uses internally its Palette function.
+    Pillow uses internally in its Palette function.
 
     Args:
         pil_img (Image): Pillow Image
@@ -41,7 +62,8 @@ def get_dominant_colors(
     # Find the color that occurs most often
     palette = paletted.getpalette()
     color_counts = sorted(paletted.getcolors(), key=lambda x: x[0], reverse=True)
-
+    if max_colors > len(color_counts):
+        max_colors = len(color_counts)
     total_pixels = img.size[0] * img.size[1]
     dominant_colors = []
     for i in range(max_colors):
@@ -150,15 +172,16 @@ if __name__ == "__main__":
     innerJSON = {"SHAPE": args.Shape}
 
     width, height = image.size
-    left = width * 0.3
-    top = height * 0.3
-    right = width * 0.7
-    bottom = height * 0.7
+    left = width * 0.25
+    top = height * 0.25
+    right = width * 0.75
+    bottom = height * 0.75
 
     # Isolate shape and text
     cropped = image.crop((left, top, right, bottom))
+    cropped = reducer(cropped)
 
-    top_colors = get_dominant_colors(cropped, max_colors=3)
+    top_colors = get_dominant_colors(cropped, max_colors=4)
     print(top_colors)
     color_values = [top_colors[i][0] for i in range(len(top_colors))]
 
