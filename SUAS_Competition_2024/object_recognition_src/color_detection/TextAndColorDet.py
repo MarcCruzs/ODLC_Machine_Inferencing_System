@@ -1,6 +1,8 @@
 from PIL import Image
 import matplotlib.pyplot as plt
 import cv2
+import argparse
+import time
 
 COLORS = {
     "red": (172, 0, 0),
@@ -14,7 +16,9 @@ COLORS = {
 }
 
 
-def adjust_contrast_brightness(img, contrast: float = 1.0, brightness: int = 0):
+def adjust_contrast_brightness(
+    img: Image, contrast: float = 1.0, brightness: int = 0
+) -> Image:
     """
     Adjusts contrast and brightness of a uint8 image.
     contrast: (0.0, inf) with 1.0 leaving the contrast as is
@@ -45,11 +49,20 @@ def closest_color(requested_color: list) -> str:
     return min_colors[min(min_colors.keys())]
 
 
-# Open the image
-image_path = r"C:\Users\joshu\OneDrive\Documents\VsCode\SUAS_Competition\SUAS_Competiton\SUAS_Competition_2024\object_recognition_src\ObjectCreation\testImages\blue_pentagon_M_purple.png"
-im = cv2.imread(image_path, 1)
-plt.imshow(im)
-plt.show()
+parser = argparse.ArgumentParser(description="Process an Image file.")
+parser.add_argument(
+    "ImagePath", metavar="path", type=str, help="the path to an image file"
+)
+args = parser.parse_args()
+
+if args.ImagePath is None:
+    print("Please provide the path to an image file.")
+    exit()
+
+start_time = time.time()
+im = cv2.imread(args.ImagePath, 1)
+# plt.imshow(im)
+# plt.show()
 height, width, _ = im.shape
 
 # Calculate the coordinates for cropping
@@ -60,16 +73,19 @@ y2 = y1 + 300
 
 # Crop the middle region
 cropped = im[y1:y2, x1:x2]
-plt.imshow(cropped)
-plt.show()
-adjusted = adjust_contrast_brightness(cropped, 2.5, -100)
+# plt.imshow(cropped)
+# plt.show()
+adjusted = adjust_contrast_brightness(cropped, 3, -120)
 
 rgb_image = cv2.cvtColor(adjusted, cv2.COLOR_BGR2RGB)
 pil_img = Image.fromarray(rgb_image)
-plt.imshow(pil_img)
-plt.show()
+result = pil_img.point(lambda i: (i - 70) * 255 / (255 - 70) if (i > 70) else 0)
+pil_img = result
+# plt.imshow(pil_img)
+# plt.show()
 # Quantize down to 2-color palettized image using "Fast Octree" method
 q = pil_img.quantize(colors=2, method=2)
+end_time = time.time()
 plt.imshow(q)
 plt.show()
 # Get the first 2 colors (each represented by 3 RGB entries) from the palette
@@ -78,3 +94,5 @@ colors = q.getpalette()[:6]
 # Interpret the colors
 print(f"First color: RGB {colors[:3]} =", closest_color(colors[:3]))
 print(f"Second color: RGB {colors[3:]} =", closest_color(colors[3:]))
+
+print(f"The script took {end_time-start_time:.5f} seconds to run.")
