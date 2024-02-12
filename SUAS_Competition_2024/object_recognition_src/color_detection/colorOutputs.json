@@ -1,0 +1,27 @@
+{
+    "851": {
+        "SHAPE": "Square",
+        "SHAPE_COLOR": "red",
+        "TEXT_COLOR": "black"
+    },
+    "751": {
+        "SHAPE": "Square",
+        "SHAPE_COLOR": "red",
+        "TEXT_COLOR": "black"
+    },
+    "123456": {
+        "SHAPE": "Circle",
+        "SHAPE_COLOR": "brown",
+        "TEXT_COLOR": "black"
+    },
+    "1234567": {
+        "SHAPE": "Circle",
+        "SHAPE_COLOR": "brown",
+        "TEXT_COLOR": "black"
+    },
+    "12345678": {
+        "SHAPE": "Circle",
+        "SHAPE_COLOR": "brown",
+        "TEXT_COLOR": "black"
+    }
+}

@@ -1,3 +1,6 @@
+# text_recognition.py
+# The purpose of this script is to use easyOCR to detect texts
+# Author/s: Josh Ng, Marc Cruz
 import os
 import numpy as np
 import torch
@@ -6,46 +9,40 @@ import easyocr
 import cv2
 from matplotlib import pyplot as plt
 
-# download external data set of shapes/colors/text
-local_folder_path = "E:\\SUAS\\targetsWithAlphaNum"
+# pathway to a folder containing various images
+FOLDER_PATH = "/test_cases/"
 
+# Try/catch is checking for folder path is valid
 try:
-    # Check if the local folder path exists
-    if os.path.exists(local_folder_path):
-        local_folder_mounted = True
+    if os.path.exists(FOLDER_PATH):
+        print("Success!!!", FOLDER_PATH)
     else:
-        local_folder_mounted = False
+        print("Failed to access")
 except Exception as e:
     local_folder_mounted = False
     print(f"Error checking local folder: {e}")
 
-if local_folder_mounted:
-    print("Success!!!", local_folder_path)
-else:
-    print("Failed to access")
+# Relative path to a specific image to test with
+IMAGE_PATH = "test_cases/BLURRED_yellow_triangle_green_L.jpg"
 
-# image preprocessing
-image_path = "E:\\SUAS\\targetsWithAlphaNum/black_pentagon_2_brown.png"
-
+# Checking if image exists
 try:
-    image = Image.open(image_path)
-    plt.imshow(image)
-    plt.axis("on")
-    plt.show()
+    image = Image.open(IMAGE_PATH)
 except Exception as e:
     print(f"Error opening image: {e}")
     exit()
 
-if torch.cuda.is_available():
-    device = torch.device("cuda")
-    print(f"CUDA is available. Using GPU: {torch.cuda.get_device_name()}")
-else:
-    print("CUDA is not available. Using CPU.")
+# Testing for CUDA compatitable GPU
+# if torch.cuda.is_available():
+#     device = torch.device("cuda")
+#     print(f"CUDA is available. Using GPU: {torch.cuda.get_device_name()}")
+# else:
+#     print("CUDA is not available. Using CPU.")
 
-
+# easyOCR Implementation to detect alphanumeric
 try:
-    ocrReader = easyocr.Reader(["en"], gpu=True)
-    result = ocrReader.readtext(image_path)
+    ocrReader = easyocr.Reader(['en'], gpu=True)
+    result = ocrReader.readtext(IMAGE_PATH)
     print(result)
 
     if result:
@@ -54,13 +51,9 @@ try:
         text = result[0][1]
         font = cv2.FONT_HERSHEY_SIMPLEX
 
-        image2 = cv2.imread(image_path)
+        image2 = cv2.imread(IMAGE_PATH)
         image2 = cv2.rectangle(image2, top_left, bottom_right, (0, 255, 0), 5)
-        image2 = cv2.putText(
-            image2, text, top_left, font, 1, (255, 255, 2555), 2, cv2.LINE_AA
-        )
-        plt.imshow(image2)
-        plt.show()
+        image2 = cv2.putText(image2, text, top_left, font, 1, (255, 255, 2555), 2, cv2.LINE_AA)
 
 except Exception as e:
     print(f"Error performing OCR: {e}")
