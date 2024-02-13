@@ -3,7 +3,7 @@ startTime = time.time()
 from PIL import Image
 from matplotlib import pyplot as plt
 import argparse, json
-import os.path
+import os, os.path, subprocess
 
 # use pre-defined rgb values for SUAS-specified colors
 COLORS = {
@@ -16,6 +16,29 @@ COLORS = {
     "orange": (255, 165, 0),
     "brown": (150, 75, 0),
 }
+
+"""
+
+The function below executes a python script given a path to that file, 
+there is an optional paramater "timestamp". Given that there is now
+a timestamp key based json file, text_recognition.py will be given
+the key to add its results to
+
+"""
+def execute_python_file(file_path, timestamp=""):
+   try:
+      completed_process = subprocess.run(['python', file_path, timestamp], capture_output=True, text=True)
+      if completed_process.returncode == 0:
+         print("Execution successful.")
+         print("Output:")
+         print(completed_process.stdout)
+      else:
+         print(f"Error: Failed to execute '{file_path}'.")
+         print("Error output:")
+         print(completed_process.stderr)
+   except FileNotFoundError:
+      print(f"Error: The file '{file_path}' does not exist.")
+
 
 
 def get_dominant_colors(
@@ -148,6 +171,8 @@ if __name__ == "__main__":
 
     image = Image.open(args.ImagePath)
 
+    TEXT_DETECTOR_PATH = "object_recognition_src/color_detection/tester.py"
+
     innerJSON = {"SHAPE": args.Shape}
 
     width, height = image.size
@@ -176,6 +201,7 @@ if __name__ == "__main__":
             innerJSON["TEXT_COLOR"] = color
 
     write_json(innerJSON, args.Timestamp)
+    execute_python_file(TEXT_DETECTOR_PATH, args.Timestamp)
 
     executionTime = (time.time() - startTime)
     print('\nExecution time in seconds: ' + str(executionTime))

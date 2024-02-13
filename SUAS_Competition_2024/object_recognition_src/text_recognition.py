@@ -1,7 +1,7 @@
 # text_recognition.py
 # The purpose of this script is to use easyOCR to detect texts
 # Author/s: Josh Ng, Marc Cruz
-import os
+import os, subprocess, argparse
 import numpy as np
 import torch
 from PIL import Image
@@ -23,7 +23,7 @@ except Exception as e:
     print(f"Error checking local folder: {e}")
 
 # Relative path to a specific image to test with
-IMAGE_PATH = "test_cases/BLURRED_yellow_triangle_green_L.jpg"
+IMAGE_PATH = "object_recognition_src/test_cases/BLURRED_yellow_triangle_green_L.jpg"
 
 # Checking if image exists
 try:
