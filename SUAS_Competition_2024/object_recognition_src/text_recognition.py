@@ -1,7 +1,7 @@
 # text_recognition.py
 # The purpose of this script is to use easyOCR to detect texts
 # Author/s: Josh Ng, Marc Cruz
-import os, subprocess, argparse
+import os, subprocess, argparse, json
 import numpy as np
 import torch
 from PIL import Image
@@ -9,8 +9,26 @@ import easyocr
 import cv2
 from matplotlib import pyplot as plt
 
+
+"""
+setting up parameters
+"""
+parser = argparse.ArgumentParser(description="Add a time based key value")
+parser.add_argument(
+    "TIMESTAMP", metavar="timestamp", type=str, help="The timestamp of the shape"
+)
+args = parser.parse_args()
+
+if args.TIMESTAMP is None:
+    print("Please provide the TIMESTAMP to the shape.")
+    exit()
+
+
 # pathway to a folder containing various images
 FOLDER_PATH = "/test_cases/"
+
+# pathway to colorOutputs.json
+COLOR_OUTPUTS_PATH = "C:/Users/jcmis/Downloads/School/UAV Lab/GitRepo/SUAS_Competiton/SUAS_Competition_2024/object_recognition_src/color_detection/colorOutputs.json"
 
 # Try/catch is checking for folder path is valid
 try:
@@ -23,7 +41,7 @@ except Exception as e:
     print(f"Error checking local folder: {e}")
 
 # Relative path to a specific image to test with
-IMAGE_PATH = "object_recognition_src/test_cases/BLURRED_yellow_triangle_green_L.jpg"
+IMAGE_PATH = "C:/Users/jcmis/Downloads/School/UAV Lab/GitRepo/SUAS_Competiton/SUAS_Competition_2024/object_recognition_src/test_cases/BLURRED_yellow_triangle_green_L.jpg"
 
 # Checking if image exists
 try:
@@ -54,6 +72,13 @@ try:
         image2 = cv2.imread(IMAGE_PATH)
         image2 = cv2.rectangle(image2, top_left, bottom_right, (0, 255, 0), 5)
         image2 = cv2.putText(image2, text, top_left, font, 1, (255, 255, 2555), 2, cv2.LINE_AA)
+
+
+        with open(COLOR_OUTPUTS_PATH, 'r+') as file:
+            file_data = json.load(file)
+            file_data[args.TIMESTAMP]["TEXT"] = str(result[0][1])
+            file.seek(0)
+            json.dump(file_data, file, indent=4)
 
 except Exception as e:
     print(f"Error performing OCR: {e}")

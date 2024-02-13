@@ -2,7 +2,8 @@
     "851": {
         "SHAPE": "Square",
         "SHAPE_COLOR": "red",
-        "TEXT_COLOR": "black"
+        "TEXT_COLOR": "black",
+        "TEXT": "1"
     },
     "751": {
         "SHAPE": "Square",
