@@ -92,7 +92,7 @@ plt.show()
 colors = q.getpalette()[:6]
 # colors = [color for color in colors]
 # Interpret the colors
-print(f"First color: RGB {colors[:3]} =", closest_color(colors[:3]))
-print(f"Second color: RGB {colors[3:]} =", closest_color(colors[3:]))
+print(f"Shape color: RGB {colors[:3]} =", closest_color(colors[:3]))
+print(f"Text color: RGB {colors[3:]} =", closest_color(colors[3:]))
 
 print(f"The script took {end_time-start_time:.5f} seconds to run.")
