@@ -1,8 +1,10 @@
 from PIL import Image
 import matplotlib.pyplot as plt
 import cv2
-import argparse
 import time
+
+# built-in python library for writing cmd scripts
+import argparse
 
 COLORS = {
     "red": (172, 0, 0),
@@ -16,13 +18,33 @@ COLORS = {
 }
 
 
+def display_rgb_image(img: Image) -> None:
+    """Wrapper function for matplotlib's image display functions.
+    Simplifies the overall thing to a one-liner
+
+    Args:
+        img (Image): PIL Image or OpenCV Image converted to rgb format (default is bgr)
+    """
+    plt.imshow(img)
+    plt.axis("off")
+    plt.show()
+
+
 def adjust_contrast_brightness(
     img: Image, contrast: float = 1.0, brightness: int = 0
 ) -> Image:
     """
-    Adjusts contrast and brightness of a uint8 image.
-    contrast: (0.0, inf) with 1.0 leaving the contrast as is
-    brightness: [-255, 255] with 0 leaving the brightness as is
+    Adjusts the contrast and brightness of a PIL or converted OpenCV image.
+
+    Args:
+        img (Image): The input image.
+        contrast (float): The contrast adjustment factor. A value of 1.0 leaves the contrast as is.
+            Values greater than 1.0 increase the contrast, while values less than 1.0 decrease the contrast.
+        brightness (int): The brightness adjustment value. A value of 0 leaves the brightness as is.
+            Values greater than 0 increase the brightness, while values less than 0 decrease the brightness.
+
+    Returns:
+        Image: The adjusted image.
     """
     brightness += int(round(255 * (1 - contrast) / 2))
     return cv2.addWeighted(img, contrast, img, 0, brightness)
@@ -61,8 +83,8 @@ if args.ImagePath is None:
 
 start_time = time.time()
 im = cv2.imread(args.ImagePath, 1)
-# plt.imshow(im)
-# plt.show()
+
+
 height, width, _ = im.shape
 
 # Calculate the coordinates for cropping
@@ -73,24 +95,23 @@ y2 = y1 + 300
 
 # Crop the middle region
 cropped = im[y1:y2, x1:x2]
-# plt.imshow(cropped)
-# plt.show()
+
+
 adjusted = adjust_contrast_brightness(cropped, 3, -120)
 
 rgb_image = cv2.cvtColor(adjusted, cv2.COLOR_BGR2RGB)
 pil_img = Image.fromarray(rgb_image)
 result = pil_img.point(lambda i: (i - 70) * 255 / (255 - 70) if (i > 70) else 0)
 pil_img = result
-# plt.imshow(pil_img)
-# plt.show()
+
+
 # Quantize down to 2-color palettized image using "Fast Octree" method
 q = pil_img.quantize(colors=2, method=2)
 end_time = time.time()
-plt.imshow(q)
-plt.show()
+
 # Get the first 2 colors (each represented by 3 RGB entries) from the palette
 colors = q.getpalette()[:6]
-# colors = [color for color in colors]
+
 # Interpret the colors
 print(f"Shape color: RGB {colors[:3]} =", closest_color(colors[:3]))
 print(f"Text color: RGB {colors[3:]} =", closest_color(colors[3:]))
