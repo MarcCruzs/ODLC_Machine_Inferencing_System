@@ -3,4 +3,4 @@ val: C:/Users/jcmis/Downloads/School/UAV Lab/GitRepo/SUAS_Competiton/SUAS_Compet
 # test: ../test/images
 
 nc: 6
-names: ["", "", "", "", "person", ""]
+names: ["person", "person", "person", "person", "person", "person"]
