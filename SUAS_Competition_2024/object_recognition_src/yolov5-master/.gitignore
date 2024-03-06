@@ -30,6 +30,7 @@ data/images/*
 !data/images/zidane.jpg
 !data/images/bus.jpg
 !data/*.sh
+!runs/train/*
 
 results*.csv
 
@@ -44,10 +45,7 @@ VOC/
 !targets*.mat
 
 # Neural Network weights -----------------------------------------------------------------------------------------------
-<<<<<<< HEAD
 *.pb
-=======
->>>>>>> 3ae45949fa7621c09f47f0af9073fbfca84321f2
 *.onnx
 *.engine
 *.mlmodel
