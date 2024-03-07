@@ -1,4 +1,4 @@
-weights: yolov5s.pt
+weights: runs\train\exp16\weights\last.pt
 cfg: ''
 data: C:\Users\jcmis\Downloads\School\UAV Lab\GitRepo\SUAS_Competiton\SUAS_Competition_2024\object_recognition_src\yolov5-master\data\aerialPeople.yaml
 hyp:
@@ -30,11 +30,11 @@ hyp:
   mosaic: 1.0
   mixup: 0.0
   copy_paste: 0.0
-epochs: 2
-batch_size: 4
+epochs: 4
+batch_size: 5
 imgsz: 640
 rect: false
-resume: false
+resume: true
 nosave: false
 noval: false
 noautoanchor: false
