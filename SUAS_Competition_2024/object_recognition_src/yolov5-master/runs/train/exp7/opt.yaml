@@ -1,6 +1,6 @@
 weights: yolov5s.pt
 cfg: ''
-data: C:\Users\jcmis\Downloads\School\UAV Lab\GitRepo\SUAS_Competiton\SUAS_Competition_2024\object_recognition_src\yolov5-master\data\aerialPeople.yaml
+data: /data03/home/syed/yolov5/data/shapes_model.yaml
 hyp:
   lr0: 0.01
   lrf: 0.01
@@ -40,6 +40,8 @@ noval: false
 noautoanchor: false
 noplots: false
 evolve: null
+evolve_population: data/hyps
+resume_evolve: null
 bucket: ''
 cache: null
 image_weights: false
@@ -49,7 +51,7 @@ single_cls: false
 optimizer: SGD
 sync_bn: false
 workers: 8
-project: runs\train
+project: runs/train
 name: exp
 exist_ok: false
 quad: false
@@ -65,4 +67,6 @@ entity: null
 upload_dataset: false
 bbox_interval: -1
 artifact_alias: latest
-save_dir: runs\train\exp7
+ndjson_console: false
+ndjson_file: false
+save_dir: runs/train/exp7
