@@ -1,1 +1,0 @@
-# object_recognition_src
