@@ -7,12 +7,17 @@ Currently, refer to reports for documentation.
 - Object Recognition: The UAV being capable of Object Detection, Classification, and Localization. In other words, capable of taking pictures of a search area, detect objects of interest, classify characteristics, and provide a GPS location
 
 # Tech Stack
-![python](https://img.shields.io/badge/python-%233776AB?style=for-the-badge&logo=python&logoColor=FFE873&label=3.10&link=https%3A%2F%2Fwww.python.org%2F
+![python](https://img.shields.io/badge/python-%233776AB?style=for-the-badge&logo=python&logoColor=FFE873&label=3.11&link=https%3A%2F%2Fwww.python.org%2F
 )
 [![pandas](https://img.shields.io/badge/pandas-%23150458?style=for-the-badge&logo=pandas)](https://pandas.pydata.org/) 
-![opencv](https://img.shields.io/badge/opencv-%235C3EE8?style=for-the-badge&logo=opencv&link=https%3A%2F%2Fopencv.org%2F
-)
-![pytorch](https://img.shields.io/badge/pytorch-%23EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white&link=https%3A%2F%2Fwww.python.org%2F
-)
-![NumPy](https://img.shields.io/badge/numpy-%23013243?style=for-the-badge&logo=numpy&link=https%3A%2F%2Fnumpy.org%2F
-)
+[![opencv](https://img.shields.io/badge/opencv-%235C3EE8?style=for-the-badge&logo=opencv&link=https%3A%2F%2Fopencv.org%2F
+)](https://opencv.org/)
+[![pytorch](https://img.shields.io/badge/pytorch-%23EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white&link=https%3A%2F%2Fwww.python.org%2F
+)](https://pytorch.org/)
+[![NumPy](https://img.shields.io/badge/numpy-%23013243?style=for-the-badge&logo=numpy&link=https%3A%2F%2Fnumpy.org%2F
+)](https://numpy.org/)
+[![Python Pillow](https://img.shields.io/badge/PIL-black?style=for-the-badge&logo=python&logoColor=white)](https://python-pillow.org/)
+[![Matplotlib](https://img.shields.io/badge/Matplotlib-black?style=for-the-badge&logo=python&logoColor=white)](https://matplotlib.org/)
+
+
+
