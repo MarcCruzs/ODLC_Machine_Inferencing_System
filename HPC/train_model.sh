@@ -26,5 +26,5 @@ python -m torch.distributed.run --nproc_per_node=4 train.py --batch 128 --data c
     --output=yolov5_ddp_output_script3.%j.out --error=yolov5_ddp_output_script3.%j.err
 
 # Run fourth YOLOv5 script
-python -m torch.distributed.run --nproc_per_node=4 train.py --batch 128 --data coco.yaml --weights yolov5m.pt --device 0,1,2,3 --img 640 --epochs 3 \
+python -m torch.distributed.run --nproc_per_node=4 train.py --batch 128 --data coco.yaml --weights'' --cfg yolo5s.yaml --device 0,1,2,3 --img 640 --epochs 3 \
     --output=yolov5_ddp_output_script4.%j.out --error=yolov5_ddp_output_script4.%j.err
