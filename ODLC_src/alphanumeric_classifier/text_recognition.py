@@ -15,9 +15,10 @@ logging.basicConfig(filename='ocr_log.log', level=logging.INFO, format='%(asctim
 
 #image loading
 local_folder_path = "E:\\SUAS\\targetsWithAlphaNum"
-image_path = "E:\\SUAS\\testImages\\ZOOMED_green_hexagon_white_i.jpg"
+image_path = "E:\\SUAS\\testImages\\yellow_triangle_L_green.jpg"
 ocrReader = easyocr.Reader(['en'], gpu=True)
 allowlist = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+blocklist = "!@#$%^&*()_~[]\{}|;':,./<>?"
 try:
     #local folder path exists?
     if os.path.exists(local_folder_path):
@@ -131,9 +132,10 @@ def preprocess_image(image_path):
     try:
         #mex josh
         testing_image = cv2.imread(image_path, 1)
-        testing_image = adjust_contrast_brightness(testing_image, 3, -120)
+        gaussian_blur =  cv2.medianBlur(testing_image, 67)
+        t_image = adjust_contrast_brightness(gaussian_blur, 3, -100)
 
-        rgb_image = cv2.cvtColor(testing_image, cv2.COLOR_BGR2RGB)
+        rgb_image = cv2.cvtColor(t_image, cv2.COLOR_BGR2RGB)
         quantized_image = kmeans_quantization(rgb_image)
         quantized_image = cv2.bilateralFilter(quantized_image, 9, 75, 75)
 
@@ -150,7 +152,7 @@ display(preprocessed_image, title="pp image")
 
 
 try:
-    result = ocrReader.readtext(preprocessed_image, detail=1)
+    result = ocrReader.readtext(preprocessed_image, detail=1, decoder='beamsearch')
     print(result)
     if result:
         whitelisted_text = ''.join([text for text in result[0] if text.isalnum()])
