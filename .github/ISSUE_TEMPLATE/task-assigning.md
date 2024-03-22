@@ -7,10 +7,10 @@ assignees: ''
 
 ---
 
-# Case Use
-[Add Case Use]
-# Technical Task
-[Add Technical Task]
+# User Story
+[Add User Story]
+# Task
+[Add Task]
 # Accepted Criteria
 [Add Accepted Criteria]
 # Reference/Material
