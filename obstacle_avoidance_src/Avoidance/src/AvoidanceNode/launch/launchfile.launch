@@ -1,0 +1,7 @@
+<launch>
+  <node name="visualization_marker"          pkg="AvoidanceNode">
+  <param name="frame_id"            type="string" value="laser"/>
+  <param name="inverted"            type="bool"   value="false"/>
+  <param name="angle_compensate"    type="bool"   value="true"/>
+  </node>
+</launch>
