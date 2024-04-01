@@ -15,10 +15,10 @@ logging.basicConfig(filename='ocr_log.log', level=logging.INFO, format='%(asctim
 
 #image loading
 local_folder_path = "E:\\SUAS\\targetsWithAlphaNum"
-image_path = "E:\\SUAS\\testImages\\green_trapeziod_8_yellow.jpg"
-
+image_path = "E:\\SUAS\\testImages\\yellow_triangle_L_green.jpg"
 ocrReader = easyocr.Reader(['en'], gpu=True)
-
+allowlist = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+blocklist = "!@#$%^&*()_~[]\{}|;':,./<>?"
 try:
     #local folder path exists?
     if os.path.exists(local_folder_path):
@@ -75,6 +75,7 @@ def adjust_contrast_brightness(
     """
     brightness += int(round(255 * (1 - contrast) / 2))
     return cv2.addWeighted(image_path, contrast, image_path, 0, brightness)
+
        
 #preprocessing image stuff may/maynot need
 
@@ -108,7 +109,7 @@ def adjust_contrast_brightness(
 #bilateral_blur = cv2.bilateralFilter(gaussian_blur, 15, 75, 75)
 #display(bilateral_blur, title='bilateral blur image')
 
-def kmeans_quantization(image, num_colors=8):
+def kmeans_quantization(image, num_colors=5):
     try:
         pixels = image.reshape(-1, 3).astype(np.float32)
 
@@ -126,37 +127,37 @@ def kmeans_quantization(image, num_colors=8):
         logging.error(f"Error performing K-means quantization: {e}")
         return None
 
-
-#image process function no longer for roi for post quantizing    
-
+#preprocessing image function
 def preprocess_image(image_path):
     try:
         #mex josh
         testing_image = cv2.imread(image_path, 1)
-        testing_image = adjust_contrast_brightness(testing_image, 3, -120)
+        gaussian_blur =  cv2.medianBlur(testing_image, 67)
+        t_image = adjust_contrast_brightness(gaussian_blur, 3, -100)
 
-        rgb_image = cv2.cvtColor(testing_image, cv2.COLOR_BGR2RGB)
+        rgb_image = cv2.cvtColor(t_image, cv2.COLOR_BGR2RGB)
         quantized_image = kmeans_quantization(rgb_image)
+        quantized_image = cv2.bilateralFilter(quantized_image, 9, 75, 75)
 
         return quantized_image
 
     except Exception as e:
         logging.error(f"Error preprocessing image: {e}")
         return None
-    
 
 preprocessed_image = preprocess_image(image_path)
 display(preprocessed_image, title="pp image")
 
-with tempfile.NamedTemporaryFile(suffix=".jpg", delete=False) as temp_image_file:
-    temp_image_filename = temp_image_file.name
-    cv2.imwrite(temp_image_filename, preprocessed_image)
+
 
 
 try:
-    result = ocrReader.readtext(preprocessed_image)
+    result = ocrReader.readtext(preprocessed_image, detail=1, decoder='beamsearch')
     print(result)
     if result:
+        whitelisted_text = ''.join([text for text in result[0] if text.isalnum()])
+        print("Whitelisted text:", whitelisted_text)
+        
         top_left = tuple(result[0][0][0])
         bottom_right = tuple(result[0][0][2])
         text = result[0][1]

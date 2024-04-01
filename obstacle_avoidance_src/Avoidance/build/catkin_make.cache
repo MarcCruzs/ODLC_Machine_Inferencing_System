@@ -1,0 +1,2 @@
+AvoidanceNode
+-DCATKIN_DEVEL_PREFIX=/home/suas/Avoidance/devel -DCMAKE_INSTALL_PREFIX=/home/suas/Avoidance/install -G Unix Makefiles
