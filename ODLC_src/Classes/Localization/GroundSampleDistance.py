@@ -6,8 +6,8 @@ class GroundSampleDistance:
         self,
         cameraFocalLength: float,
         cameraFocalWidth: float,
-        ImageWidth: float,
         ImageLength: float,
+        ImageWidth: float,
         altitude: float,
     ):
         if not isinstance(cameraFocalLength, (float, int)):
@@ -62,7 +62,7 @@ class GroundSampleDistance:
     def set_altitude(self, altitude):
         self.__altitude = altitude
 
-    def calculateGSD(self, sensor_height: float, pixel_size: float) -> float:
+    def calculate_GSD(self, sensor_height: float, pixel_size: float) -> float:
         """
         Calculate the Ground Sample Distance (GSD) in meters per pixel.
 

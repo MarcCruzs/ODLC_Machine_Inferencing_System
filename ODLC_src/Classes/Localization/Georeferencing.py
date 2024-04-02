@@ -1,22 +1,15 @@
 from abc import ABC, abstractmethod
 
+from ODLC_src.Classes.Localization.Localization import Localization
 
-class Georeferencing:
-    def __init__(self):
+
+class Georeferencing(Localization):
+    def __init__(self) -> None:
+        super().__init__()
+
+    def calculate_location(object_location):
         pass
 
-    def calculateRealWorldLocation(self, GSDScale, Offset):
-        # filler
-        real_world_location = [GSDScale[i] + Offset[i] for i in range(len(GSDScale))]
-        return real_world_location
+    def __georeference_object(GSD_scale, object_distance):
+        return GSD_scale * object_distance
 
-
-# interface (i think)
-class GeoreferencingGSD(ABC):
-    def __init__(self, UAV_altitude, UAV_GPS):
-        self.__UAV_altitude = UAV_altitude
-        self.__UAV_GPS = UAV_GPS
-
-    @abstractmethod
-    def calculateLocation(self):
-        pass
