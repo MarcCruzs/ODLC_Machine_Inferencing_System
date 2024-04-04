@@ -9,19 +9,15 @@ class Camera:
         if not self.cap.isOpened():
             raise ValueError(f"Unable to open camera with index {self.camera_index}")
 
-
-    def take_picture(self, filename='captured_image.jpg'):
+    def take_picture(self):
         ret, frame = self.cap.read()
 
         if not ret:
             raise ValueError("Failed to capture image from camera")
 
-        cv2.imwrite(filename, frame)
+        return frame
 
-        print(f"Picture saved as {filename}")
-
-
-    def save_to_folders(self, filename, folder1, folder2):
+    def save_to_folders(self, image, filename, folder1, folder2):
         if not os.path.exists(folder1):
             os.makedirs(folder1)
         if not os.path.exists(folder2):
@@ -29,9 +25,6 @@ class Camera:
 
         file_path1 = os.path.join(folder1, filename)
         file_path2 = os.path.join(folder2, filename)
-
-        # Read the image
-        image = cv2.imread(filename)
 
         # Save to folder 1
         cv2.imwrite(file_path1, image)
@@ -45,3 +38,16 @@ class Camera:
         # Release the camera
         self.cap.release()
         print("Camera released")
+
+if __name__ == "__main__":
+    # Instantiate the Camera object
+    camera = Camera()
+
+    # Take a picture
+    image = camera.take_picture()
+
+    # Save the picture to folders
+    camera.save_to_folders(image, filename='captured_image.jpg', folder1='folder1', folder2='folder2')
+
+    # Release the camera
+    camera.release()
