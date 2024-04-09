@@ -1,5 +1,6 @@
 import cv2
 import os
+import uuid  # Import uuid module to generate unique filenames
 
 class Camera:
     def __init__(self, camera_index=0):
@@ -17,37 +18,28 @@ class Camera:
 
         return frame
 
-    def save_to_folders(self, image, filename, folder1, folder2):
-        if not os.path.exists(folder1):
-            os.makedirs(folder1)
-        if not os.path.exists(folder2):
-            os.makedirs(folder2)
-
+    def save_to_folders(self, image, folder1, folder2):
+        filename = str(uuid.uuid4()) + ".jpg"
+        
         file_path1 = os.path.join(folder1, filename)
         file_path2 = os.path.join(folder2, filename)
 
-        # Save to folder 1
         cv2.imwrite(file_path1, image)
-        print(f"Image saved to {file_path1}")
 
-        # Save to folder 2
         cv2.imwrite(file_path2, image)
-        print(f"Image saved to {file_path2}")
 
     def release(self):
-        # Release the camera
         self.cap.release()
-        print("Camera released")
 
 if __name__ == "__main__":
-    # Instantiate the Camera object
+    # Read folder paths from environment variables or use default values
+    folder1 = os.getenv("FOLDER1", "./Folder1")
+    folder2 = os.getenv("FOLDER2", "./Folder2")
+
     camera = Camera()
 
-    # Take a picture
     image = camera.take_picture()
 
-    # Save the picture to folders
-    camera.save_to_folders(image, filename='captured_image.jpg', folder1='folder1', folder2='folder2')
+    camera.save_to_folders(image, folder1=folder1, folder2=folder2)
 
-    # Release the camera
     camera.release()
