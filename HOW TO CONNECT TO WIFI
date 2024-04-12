@@ -1,0 +1,17 @@
+You need to be already connected to internet in order to use the setup wizard to connect to eduroam. Have not tested hotspot.
+
+connect to CPPGuest
+A white screen will appear and nothing will load. Do not panic, open a new firefox window
+click "Open network login page"
+send youself an access code through text
+log into guest network with the access code
+
+Now you can log yourself into eduroam. The wizard setup has already been installed, it just
+needs be be run.
+
+cd Downloads/
+sh SecureW2_JoinNow.run
+
+this should open a CPP SSO login page.
+
+if all else fails, just plug in the ethernet.

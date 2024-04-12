@@ -1,0 +1,6 @@
+cd LiDAR
+source devel/setup.bash
+ls -l /dev |grep ttyUSB
+sudo chmod 666 /dev/ttyUSB0
+roslaunch rplidar_ros view_rplidar_a2m12.launch
+
