@@ -1,14 +1,22 @@
-class MAVLinkInitialization:
-    def __init__(self, port) -> None:
-        self.port = port
+from pymavlink import mavutil
 
-    def connect_to_cube():
-        pass
+def main():
+    port = 'COM7'
 
-    def initialize_heartbeat():
-        pass
+    try:
+        master = mavutil.mavlink_connection(port)
+        print("MAVLink connection established")
 
-    def __check_heartbeat_by_interval(time_interval) -> bool:
-        pass
+        while True:
+            msg = master.recv_match(type='HEARTBEAT', blocking=True)
+            if msg:
+                print("Received Heartbeat: %s" % msg)
 
-    
+    except mavutil.MavError as e:
+        print(f"MAVLink error: {e}")
+
+    except Exception as e:
+         print(f"Error: {e}")
+
+if __name__ == "__main__":
+    main()
