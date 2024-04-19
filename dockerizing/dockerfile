@@ -1,0 +1,18 @@
+FROM python:3.11
+
+RUN apt-get update && apt-get install -y libgl1-mesa-glx
+
+# Set the working directory in the container
+WORKDIR /usr/app/src
+
+COPY ./src ./src
+
+# Copy the YOLOv5 model file
+RUN pip install -r ./src/requirements.txt
+
+
+ENTRYPOINT [ "python", "./src/detect.py" ]
+
+# "--source", "--weights", "HumanModel.pt", "--save-txt", "--name", "ModelResults" ]
+
+
