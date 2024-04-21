@@ -981,7 +981,7 @@ def autosplit(path=DATASETS_DIR / 'coco128/images', weights=(0.9, 0.1, 0.0), ann
         if (path.parent / x).exists():
             (path.parent / x).unlink()  # remove existing
 
-    print(f'Autosplitting images from {path}' + ', using *.txt labeled images only' * annotated_only)
+    # print(f'Autosplitting images from {path}' + ', using *.txt labeled images only' * annotated_only)
     for i, img in tqdm(zip(indices, files), total=n):
         if not annotated_only or Path(img2label_paths([str(img)])[0]).exists():  # check label
             with open(path.parent / txt[i], 'a') as f:
@@ -1140,11 +1140,12 @@ class HUBDatasetStats():
         # Save, print and return
         if save:
             stats_path = self.hub_dir / 'stats.json'
-            print(f'Saving {stats_path.resolve()}...')
+            # print(f'Saving {stats_path.resolve()}...')
             with open(stats_path, 'w') as f:
                 json.dump(self.stats, f)  # save stats.json
         if verbose:
-            print(json.dumps(self.stats, indent=2, sort_keys=False))
+            # print(json.dumps(self.stats, indent=2, sort_keys=False))
+            print("\n")
         return self.stats
 
     def process_images(self):
@@ -1156,7 +1157,7 @@ class HUBDatasetStats():
             desc = f'{split} images'
             for _ in tqdm(ThreadPool(NUM_THREADS).imap(self._hub_ops, dataset.im_files), total=dataset.n, desc=desc):
                 pass
-        print(f'Done. All images saved to {self.im_dir}')
+        # print(f'Done. All images saved to {self.im_dir}')
         return self.im_dir
 
 

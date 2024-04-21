@@ -10,8 +10,13 @@ COPY ./src ./src
 # Copy the YOLOv5 model file
 RUN pip install -r ./src/requirements.txt
 
+# Set up the entrypoint script
 
-ENTRYPOINT [ "python", "./src/detect.py" ]
+RUN chmod +x ./src/entry.sh
+
+ENTRYPOINT ["./src/entry.sh"]
+
+# ENTRYPOINT [ "python", "./src/detect.py" ]
 
 # "--source", "--weights", "HumanModel.pt", "--save-txt", "--name", "ModelResults" ]
 
