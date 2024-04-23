@@ -1,0 +1,19 @@
+FROM python:3.11
+
+RUN apt-get update && apt-get install -y libgl1-mesa-glx
+
+# Set the working directory in the container
+WORKDIR /usr/app/src
+
+COPY ./src ./src
+
+# Copy the YOLOv5 model file
+RUN pip install -r ./src/requirements.txt
+
+# Set up the entrypoint script
+RUN chmod +x ./src/entrypoint.sh
+
+ENTRYPOINT ["./src/entrypoint.sh"]
+
+
+
