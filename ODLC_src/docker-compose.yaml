@@ -3,12 +3,18 @@ services:
 # pulled marc's camera docker. (not working. dont run)
   camera:
     container_name: camera_module
-    image: joestrada1022/camera
+    image: <<fill in image name>>
     volumes:
       - raw:/usr/app/src/folder1
       - data:/usr/app/src/folder2
     command: ["--folder1", "/usr/app/src/folder1/", "--folder2", "/usr/app/src/folder2/", "/dev/video0"]
-    
+
+  shape:
+    container_name: shade_model
+    image: <fill in image name>>
+    volumes:
+      - raw:
+    command: ["provide arguments to docker container here"]
 
   color:
     container_name: color_model
@@ -16,6 +22,20 @@ services:
     volumes:
       - raw:/usr/app/src/images
     command: ["/usr/app/src/images/*"]
+  
+  text:
+    container_name: text_model
+    image: <<fill in image name here>>
+    volumes:
+      - raw:
+    command: ["provide arguments to docker container here"]
+
+# put last since it deletes the image from raw volume
+  human:
+    container_name: human_model
+    image: <<fill in image name>>
+    volumes:
+      -raw:/local_volume
 
 volumes:
   raw:
