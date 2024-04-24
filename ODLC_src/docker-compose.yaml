@@ -10,6 +10,8 @@ services:
     command: ["--folder1", "/usr/app/src/folder1/", "--folder2", "/usr/app/src/folder2/", "/dev/video0"]
 
   shape:
+    depends_on:
+      - camera
     container_name: shade_model
     image: <fill in image name>>
     volumes:
@@ -17,6 +19,9 @@ services:
     command: ["provide arguments to docker container here"]
 
   color:
+  # TODO: fix so it takes images like Jason's thing
+    depends_on:
+      - shape
     container_name: color_model
     image: joestrada1022/odlc_color_model
     volumes:
@@ -24,6 +29,8 @@ services:
     command: ["/usr/app/src/images/*"]
   
   text:
+    depends_on:
+      - color # can change so that it also depends on shape but beware the consequences of that
     container_name: text_model
     image: <<fill in image name here>>
     volumes:
@@ -32,6 +39,8 @@ services:
 
 # put last since it deletes the image from raw volume
   human:
+    depends_on:
+      - text
     container_name: human_model
     image: <<fill in image name>>
     volumes:
