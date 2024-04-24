@@ -49,7 +49,7 @@ def join_threads(verbose=False):
 
 def notebook_init(verbose=True):
     # Check system software and hardware
-    print('Checking setup...')
+    # print('Checking setup...')
 
     import os
     import shutil
@@ -82,5 +82,5 @@ def notebook_init(verbose=True):
         s = ''
 
     select_device(newline=False)
-    print(emojis(f'Setup complete ✅ {s}'))
+    # print(emojis(f'Setup complete ✅ {s}'))
     return display
