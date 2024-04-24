@@ -1,11 +1,12 @@
 version: '3'
 services:
+# pulled marc's camera docker. (not working. dont run)
   camera:
     container_name: camera_module
     image: joestrada1022/camera
     volumes:
       - raw:/usr/app/src/folder1
-      - processing:/usr/app/src/folder2
+      - data:/usr/app/src/folder2
     command: ["--folder1", "/usr/app/src/folder1/", "--folder2", "/usr/app/src/folder2/", "/dev/video0"]
     
 
@@ -13,9 +14,9 @@ services:
     container_name: color_model
     image: joestrada1022/odlc_color_model
     volumes:
-      - processing:/usr/app/src/images
+      - raw:/usr/app/src/images
     command: ["/usr/app/src/images/*"]
 
 volumes:
   raw:
-  processing:
+  data:
