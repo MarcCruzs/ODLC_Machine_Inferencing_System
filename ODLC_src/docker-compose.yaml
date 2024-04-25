@@ -26,7 +26,7 @@ services:
     image: joestrada1022/odlc_color_model
     volumes:
       - raw:/usr/app/src/images
-    command: ["/usr/app/src/images/*"]
+    command: ["/usr/app/src/images/"]
   
   text:
     depends_on:
