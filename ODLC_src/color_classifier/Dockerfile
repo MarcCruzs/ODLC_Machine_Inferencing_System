@@ -10,4 +10,4 @@ RUN pip install -r requirements.txt
 
 COPY ./src ./src
 
-ENTRYPOINT [ "python", "./src/TextAndColorDet.py" ]
+ENTRYPOINT [ "./src/entry.sh" ]

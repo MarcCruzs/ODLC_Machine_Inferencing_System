@@ -1,0 +1,51 @@
+version: '3'
+services:
+# pulled marc's camera docker. (not working. dont run)
+  camera:
+    container_name: camera_module
+    image: <<fill in image name>>
+    volumes:
+      - raw:/usr/app/src/folder1
+      - data:/usr/app/src/folder2
+    command: ["--folder1", "/usr/app/src/folder1/", "--folder2", "/usr/app/src/folder2/", "/dev/video0"]
+
+  shape:
+    depends_on:
+      - camera
+    container_name: shade_model
+    image: <fill in image name>>
+    volumes:
+      - raw:
+    command: ["provide arguments to docker container here"]
+
+  color:
+  # TODO: fix so it takes images like Jason's thing
+    depends_on:
+      - shape
+    container_name: color_model
+    image: joestrada1022/odlc_color_model
+    volumes:
+      - raw:/usr/app/src/images
+    command: ["/usr/app/src/images/"]
+  
+  text:
+    depends_on:
+      - color # can change so that it also depends on shape but beware the consequences of that
+    container_name: text_model
+    image: <<fill in image name here>>
+    volumes:
+      - raw:
+    command: ["provide arguments to docker container here"]
+
+# put last since it deletes the image from raw volume
+  human:
+    depends_on:
+      - text
+    container_name: human_model
+    image: <<fill in image name>>
+    volumes:
+      -raw:/local_volume
+
+volumes:
+  raw:
+  data:
