@@ -1,0 +1,8 @@
+prefix=/home/suas/Avoidance/install
+
+Name: AvoidanceNode
+Description: Description of AvoidanceNode
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
