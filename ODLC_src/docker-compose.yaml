@@ -9,9 +9,19 @@ services:
       - data:/usr/app/src/folder2
     command: ["--folder1", "/usr/app/src/folder1/", "--folder2", "/usr/app/src/folder2/", "/dev/video0"]
 
-  shape:
+
+# put last since it deletes the image from raw volume
+  human:
     depends_on:
       - camera
+    container_name: human_model
+    image: jccmar/humanmodel
+    volumes:
+      -raw:/raw_images
+
+  shape:
+    depends_on:
+      - human
     container_name: shade_model
     image: <fill in image name>>
     volumes:
@@ -37,14 +47,6 @@ services:
       - raw:
     command: ["provide arguments to docker container here"]
 
-# put last since it deletes the image from raw volume
-  human:
-    depends_on:
-      - text
-    container_name: human_model
-    image: <<fill in image name>>
-    volumes:
-      -raw:/local_volume
 
 volumes:
   raw:
