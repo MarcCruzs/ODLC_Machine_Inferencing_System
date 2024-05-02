@@ -1,4 +1,4 @@
-import os, re, subprocess
+import os, re, subprocess, glob
 import numpy as np
 import torch
 from PIL import Image, ImageEnhance
@@ -15,8 +15,8 @@ startTime = time.time()
 logging.basicConfig(filename='ocr_log.log', level=logging.INFO, format='%(asctime)s -  %(levelname)s - %(message)s')
 
 #image loading
-local_folder_path = "E:\\SUAS\\targetsWithAlphaNum"
-image_path = "E:\\SUAS\\testImages\\yellow_square_C_white.jpg"
+local_folder_path = "/raw_images/"
+image_path = glob.glob(local_folder_path + "*.jpg")
 ocrReader = easyocr.Reader(['en'], gpu=True)
 allowlist = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 blocklist = "!@#$%^&*()_~[]\{}|;':,./<>?"
