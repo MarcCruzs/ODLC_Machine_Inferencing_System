@@ -9,9 +9,9 @@ if [ -z "$image_file" ]; then
 fi
 
 #copy image to volume 2 and remove it from first volume
-cp "$image_file" /imagebank
+# cp "$image_file" /imagebank
 
-rm /raw_images/$(basename "$image_file")
+# rm /raw_images/$(basename "$image_file")
 
 #run detection script
-python ./src/detect.py --source /imagebank/$(basename "$image_file") --weights ./src/HumanModel.pt --save-txt --name ModelResults
+python ./src/detect.py --source /raw_images/$(basename "$image_file") --weights ./src/HumanModel.pt --save-txt --name ModelResults
