@@ -1,11 +1,11 @@
 from PIL import Image, ImageDraw
-import os, random, datetime, string
+import time, os, random, datetime, string, math
 
-# sets path for bg and fg folders on harddrive
-BG_PATH = "E:\\2023\\synthetic_data_collection\\background"
-FG_PATH = "E:\\2023\\circles_only"
+start_time = time.time()
 
-# Pre-defines Yolo Class numbers
+BG_PATH = "/data03/home/jestrada2/synthetic_data_collection/solid_color_bg"
+FG_PATH = "/data03/home/jestrada2/synthetic_data_collection/targetsWithAlphaNum"
+
 SHAPE_YOLO_CLASS_NUMBERS = {
     "star": 0,
     "cross": 1,
@@ -17,65 +17,48 @@ SHAPE_YOLO_CLASS_NUMBERS = {
     "circle": 7,
 }
 
-# minimum scaling that is still human readable
-SCALING_CONSTANTS = {
-    "star": 0.045,
-    "cross": 0.0275,
-    "pentagon": 0.035,
-    "triangle": 0.035,
-    "rectangle": 0.0275,
-    "quartercircle": 0.0275,
-    "semicircle": 0.02125,
-    "circle": 0.02625,
-}
+# manually tweaked and tested with 2 people to find minimum scaling factor that is still human readable
+# SCALING_CONSTANTS = {
+#     'star': 0.045, 'cross': 0.0275, 'pentagon': 0.035, 'triangle': 0.035, 'rectangle': 0.0275,
+#     'quartercircle': 0.0275, 'semicircle': 0.02125, 'circle': 0.02625
+# }
 
 
-def get_scaling(name: str) -> float:
-    """Gets random scale factor for images (soon to be deprecated)
+def lower_quality(pilImage):
+    origW, origH = pilImage.size
+    blur_factor = random.randint(19, 26)
+    blurred = pilImage.resize((blur_factor, blur_factor))
+    blurred = blurred.resize((origW, origH))
 
-    Args:
-        name (str): name of shape
+    return blurred
 
-    Returns:
-        float: randomly generated scale factor between a range
-    """
-    upper = 0.05
-    lower = 0.45
 
-    name = name.split("_")[1]
+def get_scaling(name):
+    upper = 20.37
+    lower = 15.63
 
-    lower = SCALING_CONSTANTS[name]
     return random.uniform(lower, upper)
 
 
-def add_bounding_box(
-    im: Image, color: str = "Yellow", margin: int = 5, draw_box: bool = False
-) -> Image:
-    """Adds bounding box to foreground image in YOLO format through resizing.
-    Can include physical box as well
-
-    Args:
-        im (Image): Image to get bounding box applied to
-        color (str, optional): Color of drawn bounding box
-        margin (int, optional): Margin between box and image. Defaults to 5.
-        draw_box (bool, optional): If physical box should also be drawn. Defaults to False.
-
-    Returns:
-        Image: New image with bounding box pasted
-    """
+def add_bounding_box(im, color, margin=5):
     new_im = Image.new(
         "RGBA", (im.size[0] + 2 * margin, im.size[1] + 2 * margin), (0, 0, 0, 0)
     )
     new_im.paste(im, (margin, margin))
     w, h = new_im.size
 
-    if draw_box:
-        draw = ImageDraw.Draw(new_im)
-        draw.line((0, 0, 0, h), fill=color, width=3)
-        draw.line((w, 0, w, h), fill=color, width=3)
-        draw.line((0, 0, w, 0), fill=color, width=3)
-        draw.line((0, h, w, h), fill=color, width=3)
+    # draw = ImageDraw.Draw(new_im)
+    # draw.line((0, 0, 0, h), fill=color, width=3)
+    # draw.line((w, 0, w, h), fill=color, width=3)
+    # draw.line((0, 0, w, 0), fill=color, width=3)
+    # draw.line((0, h, w, h), fill=color, width=3)
     return new_im
+
+
+def get_random_alphanumeric_string(length):
+    letters_and_digits = string.ascii_uppercase + string.digits
+    result_str = "".join(random.choice(letters_and_digits) for i in range(length))
+    return result_str
 
 
 def get_random_color():
@@ -84,13 +67,16 @@ def get_random_color():
 
 
 # run in debugger or cmd or something
+count_stop = 0
 for file in os.listdir(FG_PATH):
+    count_stop += 1
+    if count_stop >= 1000:
+        break
     # gets random image from random subfolder of base path
     # rand_subfolder = os.path.join(BG_PATH, random.choice(os.listdir(BG_PATH)))
     # rand_bg = os.path.join(rand_subfolder, random.choice(os.listdir(rand_subfolder)))
-    # rand_fg = os.path.join(FG_PATH, random.choice(os.listdir(FG_PATH)))
-    rand_bg = "E:\\2023\\synthetic_data_collection\\background\\a000\\Video_Breakdown43281.png"
-    rand_fg = os.path.join(FG_PATH, file)
+    rand_fg = os.path.join(FG_PATH, random.choice(os.listdir(FG_PATH)))
+    rand_bg = os.path.join(BG_PATH, random.choice(os.listdir(BG_PATH)))
 
     # skips images whose text is same color as shape color
     img_name = os.path.basename(rand_fg)
@@ -102,15 +88,15 @@ for file in os.listdir(FG_PATH):
     # opens the images
     background = Image.open(rand_bg)
     foreground = Image.open(rand_fg)
+    foreground = lower_quality(foreground)
 
     # scales down shapes
-    scale_factor = get_scaling(os.path.basename(img_name))
+    new_size = get_scaling(os.path.basename(img_name))
     foreground = foreground.resize(
         (
-            int(foreground.size[0] * scale_factor),
-            int(foreground.size[1] * scale_factor),
+            int(new_size / 2 * 2),
+            int(new_size / 2 * 2),
         ),
-        resample=Image.BILINEAR,
     )
 
     # gets image dimensions
@@ -142,20 +128,21 @@ for file in os.listdir(FG_PATH):
         fg_center = (coords[0] + new_fg.size[0] / 2, coords[1] + new_fg.size[1] / 2)
         # generates unique image name
         new_filename = (
-            rand_fg.split("\\")[-1].split(".")[0]
+            rand_fg.split("/")[-1].split(".")[0]
             + "_"
-            + rand_bg.split("\\")[-1].split(".")[0]
+            + rand_bg.split("/")[-1].split(".")[0]
         )
         coord_file = (
             new_filename + "-" + str(rotation) + "_" + str(formatted_now) + ".txt"
         )
         new_filename += "-" + str(rotation) + "_" + str(formatted_now) + ".png"
         new_bg.save(
-            f"E:\\2023\\synthetic_data_collection\\combined_images\\{new_filename}",
+            f"/data03/home/jestrada2/synthetic_data_collection/unc_dataset/images/{new_filename}",
             "PNG",
         )
         with open(
-            f"E:\\2023\\synthetic_data_collection\\combined_images\\{coord_file}", "w"
+            f"/data03/home/jestrada2/synthetic_data_collection/unc_dataset/labels/{coord_file}",
+            "w",
         ) as f:
             name = os.path.basename(img_name).split("_")[1]
             res = (
@@ -168,11 +155,11 @@ for file in os.listdir(FG_PATH):
             )
             res += str(width / bg_width) + " " + str(height / bg_height)
             f.write(res)
-print("Done")
+end_time = time.time()
+time_taken = end_time - start_time
+hours, remainder = divmod(time_taken, 3600)
+minutes, seconds = divmod(remainder, 60)
 
-
-# TODO: implement what marc said, shown below
-"""
-Marc was basically saying that of that super chinese dataset he gave me, find one that is 90 feet in the air
-and get a scaling for that, then get an error margin, so it would be like 0.05 +- 0.02 or something
-"""
+print(
+    f"Time taken to complete: **{int(hours)} hours, {int(minutes)} minutes, {round(seconds, 2)} seconds**"
+)

@@ -1,63 +1,84 @@
 import os
-import random
+import re
 import shutil
 
-images_folder = '/data03/home/jestrada2/synthetic_data_collection/combined_images/images'
-labels_folder = '/data03/home/jestrada2/synthetic_data_collection/combined_images/labels'
-output_folder = '/data03/home/jestrada2/synthetic_data_collection/organized_dataset'
+# Define your list of 8 regex patterns
+regex_patterns = [
+    ".+_circle.+",
+    ".+rectangle.+",
+    ".+cross.+",
+    ".+star.+",
+    ".+triangle.+",
+    ".+pentagon.+",
+    ".+semicircle.+",
+    ".+quartercircle.+",
+]
 
-train_folder = os.path.join(output_folder, 'train')
-val_folder = os.path.join(output_folder, 'val')
-test_folder = os.path.join(output_folder, 'test')
+target_directory = "/data03/home/jestrada2/synthetic_data_collection/solidbg_dataset"
 
-os.makedirs(train_folder, exist_ok=True)
-os.makedirs(val_folder, exist_ok=True)
-os.makedirs(test_folder, exist_ok=True)
+# Iterate through each regex pattern
+for pattern in regex_patterns:
+    # Compile the regex pattern
+    regex = re.compile(pattern)
 
-folders = [train_folder, val_folder, test_folder]
+    # Get a list of all files in the current directory
+    current_directory = (
+        "/data03/home/jestrada2/synthetic_data_collection/unc_dataset/images"
+    )
+    label_directory = (
+        "/data03/home/jestrada2/synthetic_data_collection/unc_dataset/labels"
+    )
+    all_files = os.listdir(current_directory)
+    print(len(all_files))
 
-for folder in folders:
-    os.makedirs(os.path.join(folder, 'images'), exist_ok=True)
-    os.makedirs(os.path.join(folder, 'labels'), exist_ok=True) 
+    # Filter files matching the regex pattern
+    matching_files = [file for file in all_files if regex.match(file)]
 
-# Get a list of all the image files
-image_files = os.listdir(images_folder)
-random.shuffle(image_files)
+    print(f"Matched: {len(matching_files)} {pattern}'s")
 
-# Split the files into train, validation, and test sets
-num_files = len(image_files)
-train_files = image_files[:int(num_files * 0.7)]
-val_files = image_files[int(num_files * 0.7):int(num_files * 0.9)]
-test_files = image_files[int(num_files * 0.9):]
+    # Limit the number of files to move (31500 in your case)
+    num_matched = len(matching_files)
+    train_num = int(num_matched * 0.7)
+    test_num = int(num_matched * 0.1)
+    val_num = int(num_matched * 0.2)
 
-# Move the image and label files to the appropriate directories
-for file in train_files:
-    basename = os.path.splitext(file)[0]
-    print(basename)
-    image_file = os.path.join(images_folder, file)
-    label_file = os.path.join(labels_folder, basename + '.txt')
-    if os.path.isfile(label_file):
-        shutil.copy(image_file, os.path.join(train_folder, 'images', file))
-        shutil.copy(label_file, os.path.join(train_folder, 'labels', basename + '.txt'))
+    # move to train
+    for i in range(train_num):
+        curr_file = matching_files[i]
+        source_img = os.path.join(current_directory, curr_file)
+        source_label = os.path.join(label_directory, curr_file.replace(".png", ".txt"))
 
-for file in val_files:
-    basename = os.path.splitext(file)[0]
-    image_file = os.path.join(images_folder, file)
-    label_file = os.path.join(labels_folder, basename + '.txt')
-    if os.path.isfile(label_file):
-        shutil.copy(image_file, os.path.join(val_folder, 'images', file))
-        shutil.copy(label_file, os.path.join(val_folder, 'labels', basename + '.txt'))
+        dest_img = os.path.join(target_directory, "train", "images", curr_file)
+        dest_label = os.path.join(
+            target_directory, "train", "labels", curr_file.replace(".png", ".txt")
+        )
+        shutil.move(source_img, dest_img)
+        shutil.move(source_label, dest_label)
 
-for file in test_files:
-    basename = os.path.splitext(file)[0]
-    image_file = os.path.join(images_folder, file)
-    label_file = os.path.join(labels_folder, basename + '.txt')
-    if os.path.isfile(label_file):
-        shutil.copy(image_file, os.path.join(test_folder, 'images', file))
-        shutil.copy(label_file, os.path.join(test_folder, 'labels', basename + '.txt'))
+    # move to test
+    for i in range(train_num, train_num + test_num):
+        curr_file = matching_files[i]
+        source_img = os.path.join(current_directory, curr_file)
+        source_label = os.path.join(label_directory, curr_file.replace(".png", ".txt"))
 
-# Shuffle the contents of each subdirectory
-for root, dirs, files in os.walk(output_folder):
-    for dir in dirs:
-        dir_path = os.path.join(root, dir)
-        random.shuffle(os.listdir(dir_path))
+        dest_img = os.path.join(target_directory, "test", "images", curr_file)
+        dest_label = os.path.join(
+            target_directory, "test", "labels", curr_file.replace(".png", ".txt")
+        )
+        shutil.move(source_img, dest_img)
+        shutil.move(source_label, dest_label)
+
+    # move to val
+    for i in range(train_num + test_num, train_num + test_num + val_num):
+        curr_file = matching_files[i]
+        source_img = os.path.join(current_directory, curr_file)
+        source_label = os.path.join(label_directory, curr_file.replace(".png", ".txt"))
+
+        dest_img = os.path.join(target_directory, "val", "images", curr_file)
+        dest_label = os.path.join(
+            target_directory, "val", "labels", curr_file.replace(".png", ".txt")
+        )
+        shutil.move(source_img, dest_img)
+        shutil.move(source_label, dest_label)
+
+print("All files moved successfully!")
