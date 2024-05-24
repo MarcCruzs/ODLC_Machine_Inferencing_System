@@ -109,8 +109,6 @@ def main(image_path):
     device, device_name = get_device()
     print(f"Using device: {device_name}")
 
-    subprocess.run(["./delete.sh"])
-
     preprocessed_image = preprocess_image(image_path)
     if preprocessed_image is None:
         print("Error preprocessing image. Check logs for details.")
@@ -121,6 +119,9 @@ def main(image_path):
         save_results(image_path, result) ###########################
     else:
         print("No text detected.")
+
+    subprocess.run(["./delete.sh"])
+
 
     executionTime = (time.time() - startTime)
     print(f'Execution time in seconds: {executionTime}')
