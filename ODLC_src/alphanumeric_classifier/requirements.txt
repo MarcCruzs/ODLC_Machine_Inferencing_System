@@ -1,7 +1,0 @@
-requests 
-numpy 
-torch 
-pillow 
-easyocr 
-opencv-python 
-matplotlib
