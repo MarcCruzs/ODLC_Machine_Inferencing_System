@@ -11,39 +11,30 @@ services:
 
 
 # put last since it deletes the image from raw volume
-  human:
+  shape_human:
     depends_on:
       - camera
     container_name: human_model
-    image: <<fill in image name>>
+    image: shape_human-image
     volumes:
       -raw:/raw_images
     command: ["./src/entrypoint.sh"]
-
-  shape:
-    depends_on:
-      - human
-    container_name: shade_model
-    image: <fill in image name>>
-    volumes:
-      - raw:
-    command: ["provide arguments to docker container here"]
 
   color:
   # TODO: fix so it takes images like Jason's thing
     depends_on:
       - shape
     container_name: color_model
-    image: joestrada1022/odlc_color_model
+    image: color-image
     volumes:
       - raw:/usr/app/src/images
     command: ["/usr/app/src/images/"]
   
-  text:
+  alphanumeric:
     depends_on:
       - color # can change so that it also depends on shape but beware the consequences of that
     container_name: text_model
-    image: <<fill in image name here>>
+    image: alphanumeric-image
     volumes:
       - raw: /raw_images
     command: ["python", "/app/ocrModel.py"]

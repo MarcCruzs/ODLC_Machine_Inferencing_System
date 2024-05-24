@@ -1,0 +1,3 @@
+2024-03-27 22:54:55,209 -  WARNING - Neither CUDA nor MPS are available - defaulting to CPU. Note: This module is much faster with a GPU.
+2024-03-27 22:54:56,936 -  INFO - Local folder accessed
+2024-03-27 22:55:28,873 -  ERROR - Error performing OCR: string index out of range
