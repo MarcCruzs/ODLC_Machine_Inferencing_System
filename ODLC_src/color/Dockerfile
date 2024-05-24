@@ -10,4 +10,4 @@ RUN pip install -r requirements.txt
 
 COPY ./src ./src
 
-ENTRYPOINT [ "./src/entry.sh" ]
+ENTRYPOINT [ "./src/entrypoint.sh" ]

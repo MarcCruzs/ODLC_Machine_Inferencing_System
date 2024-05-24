@@ -14,7 +14,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Define the entrypoint command
-ENTRYPOINT ["python", "camera.py"]
+ENTRYPOINT ["/usr/app/src/entrypoint.sh"]
 
 # CMD can be overridden by docker-compose command
 CMD ["--camera_device", "0"]
