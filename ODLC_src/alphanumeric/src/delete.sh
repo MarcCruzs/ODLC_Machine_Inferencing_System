@@ -1,3 +1,3 @@
 #!/bin/bash
 
-rm -f /raw_images/*
+rm -f /images/*

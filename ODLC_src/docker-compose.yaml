@@ -42,8 +42,8 @@ services:
     container_name: text_model
     image: alphanumeric-image
     volumes:
-      - raw:/raw_images
-    command: ["python", "/app/ocrModel.py"]
+      - raw:/usr/app/src/images
+    command: ["/usr/app/src/images/"]
 
 
 volumes:
