@@ -39,9 +39,10 @@ services:
     container_name: human_model
     image: shape_human-image
     volumes:
-      - raw:/raw_images
-      - cropped:/cropped_images
-      - status:/status
+      - raw:/usr/app/raw_images
+      - cropped:/usr/app/src/images
+      - status:/usr/app/status
+      - imagebank:/usr/app/imagebank
     command: ["./src/entrypoint.sh"]
 
   color:
@@ -67,6 +68,7 @@ services:
     image: alphanumeric-image
     volumes:
       - cropped:/usr/app/src/images
+      - checklist:/usr/app/checklist
       - status:/usr/app/status
     command: ["./src/entrypoint.sh"]
   
@@ -89,3 +91,4 @@ volumes:
   data:
   status:
   checklist:
+  imagebank:

@@ -10,24 +10,26 @@ while true; do
   # Shape human tasks
   echo "Running shape human tasks..."
 
-  #get an image from volume 1
-  image_file=$(find /raw_images -maxdepth 1 -type f -name "*.jpg" -print -quit)
+  # Get an image from volume 1
+  image_file=$(find /usr/app/raw_images -maxdepth 1 -type f -name "*.jpg" -print -quit)
 
   if [ -z "$image_file" ]; then
-      echo "no image found in volume"
+      echo "No image found in volume"
       exit 1
   fi
 
-  #run HUMAN detection script
-  python ./src/detect.py --source /raw_images/$(basename "$image_file") --weights ./src/HumanModel.pt --save-txt --name HumanModelResults
+  # Run HUMAN detection script
+  echo "Running human detection script..."
+  python ./src/detect.py --source "$image_file" --weights ./src/HumanModel.pt --save-txt --name HumanModelResults
 
-  #run Shape detection script
-  python ./src/detect.py --source /raw_images/$(basename "$image_file") --weights ./src/ShapeModel.pt --save-txt --name ShapeModelResults
+  # Run Shape detection script
+  echo "Running shape detection script..."
+  python ./src/detect_objects.py --source "$image_file" --conf_threshold 0.60 --save_dir /usr/app/cropped_images --checklist_path /usr/app/checklist/output.txt
 
-  #copy image to volume 2 and remove it from first volume
-  cp "$image_file" /imagebank
-
-  rm /raw_images/$(basename "$image_file")
+  # Copy image to volume 2 and remove it from first volume
+  echo "Copying image to volume 2 and removing it from volume 1..."
+  cp "$image_file" /usr/app/imagebank
+  rm "$image_file"
 
   # Signal completion
   touch /usr/app/status/shape_human.done

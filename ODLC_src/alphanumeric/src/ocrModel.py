@@ -116,7 +116,7 @@ def main(image_path):
 
     result = perform_ocr(preprocessed_image)
     if result:
-        save_results(image_path, result) ###########################
+        save_results("/usr/app/checklist", result) #######
     else:
         print("No text detected.")
 
