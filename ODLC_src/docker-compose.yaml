@@ -1,51 +1,64 @@
 version: '3'
 services:
+
   camera:
+    build:
+      context: ./camera
+      dockerfile: Dockerfile
     container_name: camera_module
-    image: camera-image #NOT MADE YET
+    image: camera-image
     volumes:
       - raw:/usr/app/src/folder1
       - data:/usr/app/src/folder2
-    command: ["--folder1", "/usr/app/src/folder1/", "--folder2", "/usr/app/src/folder2/", "/dev/video0"]
+      - status:/usr/app/status
+    devices:
+      - "/dev/video0:/dev/video0"
+    environment:
+      - CAMERA_DEVICE=/dev/video0
+    command: ["--folder1", "/usr/app/src/folder1/", "--folder2", "/usr/app/src/folder2/"]
 
-# put last since it deletes the image from raw volume
   shape_human:
     build:
-      - context: ./shape_human
-      - dockerfile: Dockerfile
+      context: ./shape_human
+      dockerfile: Dockerfile
     depends_on:
       - camera
     container_name: human_model
     image: shape_human-image
     volumes:
-      -raw:/raw_images
+      - raw:/raw_images
+      - cropped:/cropped_images
+      - status:/status
     command: ["./src/entrypoint.sh"]
 
   color:
     build:
-      - context: ./color
-      - dockerfile: Dockerfile
+      context: ./color
+      dockerfile: Dockerfile
     depends_on:
       - shape_human
     container_name: color_model
     image: color-image
     volumes:
-      - raw:/usr/app/src/images
+      - cropped:/usr/app/src/images
+      - status:/usr/app/status
     command: ["/usr/app/src/images/"]
-  
+
   alphanumeric:
     build:
-      - context: ./alphanumeric
-      - dockerfile: Dockerfile
+      context: ./alphanumeric
+      dockerfile: Dockerfile
     depends_on:
       - color
     container_name: text_model
     image: alphanumeric-image
     volumes:
-      - raw:/usr/app/src/images
+      - cropped:/usr/app/src/images
+      - status:/usr/app/status
     command: ["/usr/app/src/images/"]
-
 
 volumes:
   raw:
+  cropped:
   data:
+  status:
