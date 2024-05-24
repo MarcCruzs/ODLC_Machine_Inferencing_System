@@ -3,13 +3,13 @@ FROM python:3.8
 
 RUN apt-get update && apt-get install -y libgl1-mesa-glx
 
-WORKDIR /app
-
-ADD ocrModel.py .
+WORKDIR /usr/app/src
 
 COPY requirements.txt .
 
-RUN pip install -r requirements.txt 
+RUN pip install -r requirements.txt
 
-ENTRYPOINT ["python", "/app/ocrModel.py"]
+COPY ./src ./src
+
+ENTRYPOINT [ "./src/entry.sh" ]
 

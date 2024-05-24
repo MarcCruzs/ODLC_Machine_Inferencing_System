@@ -1,17 +1,18 @@
 version: '3'
 services:
-# pulled marc's camera docker. (not working. dont run)
   camera:
     container_name: camera_module
-    image: <<fill in image name>>
+    image: camera-image #NOT MADE YET
     volumes:
       - raw:/usr/app/src/folder1
       - data:/usr/app/src/folder2
     command: ["--folder1", "/usr/app/src/folder1/", "--folder2", "/usr/app/src/folder2/", "/dev/video0"]
 
-
 # put last since it deletes the image from raw volume
   shape_human:
+    build:
+      - context: ./shape_human
+      - dockerfile: Dockerfile
     depends_on:
       - camera
     container_name: human_model
@@ -21,9 +22,11 @@ services:
     command: ["./src/entrypoint.sh"]
 
   color:
-  # TODO: fix so it takes images like Jason's thing
+    build:
+      - context: ./color
+      - dockerfile: Dockerfile
     depends_on:
-      - shape
+      - shape_human
     container_name: color_model
     image: color-image
     volumes:
@@ -31,12 +34,15 @@ services:
     command: ["/usr/app/src/images/"]
   
   alphanumeric:
+    build:
+      - context: ./alphanumeric
+      - dockerfile: Dockerfile
     depends_on:
-      - color # can change so that it also depends on shape but beware the consequences of that
+      - color
     container_name: text_model
     image: alphanumeric-image
     volumes:
-      - raw: /raw_images
+      - raw:/raw_images
     command: ["python", "/app/ocrModel.py"]
 
 
