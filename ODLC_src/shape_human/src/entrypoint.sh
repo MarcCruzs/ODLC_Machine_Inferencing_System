@@ -26,11 +26,6 @@ while true; do
   echo "Running shape detection script..."
   python ./src/detect_objects.py --source "$image_file" --conf_threshold 0.60 --save_dir /usr/app/cropped_images --checklist_path /usr/app/checklist/output.txt
 
-  # Copy image to volume 2 and remove it from first volume
-  echo "Copying image to volume 2 and removing it from volume 1..."
-  cp "$image_file" /usr/app/imagebank
-  rm "$image_file"
-
   # Signal completion
   touch /usr/app/status/shape_human.done
 

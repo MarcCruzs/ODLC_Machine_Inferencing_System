@@ -13,5 +13,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the rest of the working directory contents into the container at /usr/app
 COPY . .
 
-# Start the localization service
-CMD ["python", "main.py"]
+# Copy the start script
+COPY start_telemetry.sh /usr/app/start_telemetry.sh
+RUN chmod +x /usr/app/start_telemetry.sh
+
+# Start the telemetry services
+CMD ["/usr/app/start_telemetry.sh"]

@@ -1,6 +1,7 @@
 from Georeferencing import GeoreferencingGSD
 from ObjectLocation import ObjectLocation
 from GroundSampleDistance import GroundSampleDistance
+from FetchAltitude import fetch_altitude_and_gps
 
 
 def main():
@@ -9,7 +10,7 @@ def main():
     cameraFocalWidth = 100.0  # millimeters
     ImageWidth = 5000  # pixels
     ImageLength = 3000  # pixels
-    altitude = 500.0  # meters
+    altitude, latitude, longitude = fetch_altitude_and_gps()
 
     sensor_height = 2
     pixel_size = 5

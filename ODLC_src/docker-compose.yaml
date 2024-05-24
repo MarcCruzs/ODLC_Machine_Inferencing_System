@@ -1,6 +1,5 @@
 version: '3'
 services:
-
   telemetry:
     build:
       context: ./telemetry
@@ -10,7 +9,9 @@ services:
     volumes:
       - status:/usr/app/status
       - checklist:/usr/app/checklist
-    command: ["./src/entrypoint.sh"]
+    ports:
+      - "5000:5000"
+    command: ["./start_telemetry.sh"]
 
   camera:
     build:
@@ -42,7 +43,6 @@ services:
       - raw:/usr/app/raw_images
       - cropped:/usr/app/src/images
       - status:/usr/app/status
-      - imagebank:/usr/app/imagebank
     command: ["./src/entrypoint.sh"]
 
   color:
@@ -91,4 +91,3 @@ volumes:
   data:
   status:
   checklist:
-  imagebank:

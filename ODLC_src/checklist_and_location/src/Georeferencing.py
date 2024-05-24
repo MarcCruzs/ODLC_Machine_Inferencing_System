@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from ODLC_src.Classes.Localization.Localization import Localization
+import Localization
 
 
 class Georeferencing(Localization):
