@@ -11,6 +11,7 @@ services:
       - checklist:/usr/app/checklist
     ports:
       - "5000:5000"
+    restart: always
     command: ["./start_telemetry.sh"]
 
   camera:
@@ -21,6 +22,7 @@ services:
     image: camera-image
     depends_on:
       - telemetry
+    restart: always
     volumes:
       - raw:/usr/app/src/folder1
       - data:/usr/app/src/folder2
@@ -37,6 +39,7 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - camera
+    restart: always
     container_name: human_model
     image: shape_human-image
     volumes:
@@ -51,6 +54,7 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - shape_human
+    restart: always
     container_name: color_model
     image: color-image
     volumes:
@@ -64,6 +68,7 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - color
+    restart: always
     container_name: text_model
     image: alphanumeric-image
     volumes:
@@ -75,6 +80,7 @@ services:
   checklist_and_location:
     depends_on:
       - alphanumeric
+    restart: always
     build:
       context: ./checklist_and_location
       dockerfile: Dockerfile
