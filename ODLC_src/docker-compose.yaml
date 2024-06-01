@@ -12,7 +12,7 @@ services:
     ports:
       - "5000:5000"
     restart: always
-    command: ["./start_telemetry.sh"]
+    command: ["./src/start_telemetry.sh"]
 
   camera:
     build:
