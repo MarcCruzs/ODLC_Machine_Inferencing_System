@@ -8,13 +8,11 @@ WORKDIR /usr/app
 COPY requirements.txt .
 
 # Install any dependencies specified in requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -r requirements.txt
 
 # Copy the rest of the working directory contents into the container at /usr/app
-COPY . .
+COPY ./src ./src
 
-# Copy the start script
-COPY start_telemetry.sh /usr/app/start_telemetry.sh
 RUN chmod +x /usr/app/start_telemetry.sh
 
 # Start the telemetry services
