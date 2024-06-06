@@ -2,7 +2,7 @@
 FROM python:3.11-slim
 
 # Set the working directory in the container
-WORKDIR /usr/app
+WORKDIR /usr/app/src
 
 # Copy the requirements.txt file into the container at /usr/app
 COPY requirements.txt .
@@ -11,9 +11,9 @@ COPY requirements.txt .
 RUN pip install -r requirements.txt
 
 # Copy the rest of the working directory contents into the container at /usr/app
-COPY ./src ./src
+COPY ./src .
 
-RUN chmod +x /usr/app/start_telemetry.sh
+RUN chmod +x ./start_telemetry.sh
 
 # Start the telemetry services
-CMD ["/usr/app/start_telemetry.sh"]
+CMD [ "/bin/bash", "./start_telemetry.sh" ]

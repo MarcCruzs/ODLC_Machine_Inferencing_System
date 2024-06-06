@@ -1,16 +1,16 @@
-#!/bin/sh
+#!/bin/bash
 
 # Start the heartbeat script
-python /usr/app/heartbeat.py &
+python ./heartbeat.py &
 
 # Start the receiver script
-python /usr/app/Receiver.py &
+python ./Receiver.py &
 
 # Start the requester script
-python /usr/app/Requester.py &
+python ./Requester.py &
 
 # Start the sender script
-python /usr/app/Sender.py &
+python ./Sender.py &
 
 # Wait for all background processes to finish
 wait
