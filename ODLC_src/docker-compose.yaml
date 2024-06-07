@@ -5,17 +5,17 @@ services:
       context: ./telemetry
       dockerfile: Dockerfile
     container_name: telemetry_module
-    image: telemetry-image
+    image: telemetry
     volumes:
-      - status:/usr/app/status
-      - checklist:/usr/app/checklist
+      - status:/usr/app/src/status
+      - checklist:/usr/app/src/checklist
     ports:
       - "5000:5000"
     command: ["./start_telemetry.sh"]
 
   camera:
     build:
-      context: ./camera
+      context: ./Camera
       dockerfile: Dockerfile
     container_name: camera_module
     image: camera-image

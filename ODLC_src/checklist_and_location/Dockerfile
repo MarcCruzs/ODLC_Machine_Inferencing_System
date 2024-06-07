@@ -13,5 +13,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the rest of the working directory contents into the container at /usr/app
 COPY . .
 
+RUN chmod +x /usr/app/src/entrypoint.sh
+
 # Start the localization service
 CMD ["python", "main.py"]

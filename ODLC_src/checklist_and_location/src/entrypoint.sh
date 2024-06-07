@@ -4,6 +4,7 @@ while true; do
   # Wait for alphanumeric to complete
   while [ ! -f /usr/app/status/alphanumeric.done ]; do
     echo "Waiting for alphanumeric to complete..."
+    sleep 0.1
     # Removed sleep for faster checking
     :
   done
