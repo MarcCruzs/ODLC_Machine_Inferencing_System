@@ -5,7 +5,7 @@ services:
       context: ./telemetry
       dockerfile: Dockerfile
     container_name: telemetry_module
-    image: telemetry
+    image: telemetry-image
     volumes:
       - status:/usr/app/src/status
       - checklist:/usr/app/src/checklist
