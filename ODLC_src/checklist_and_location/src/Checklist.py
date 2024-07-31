@@ -1,5 +1,7 @@
 from typing import Any
+
 from ODLC_src.Classes.Predictors.PredictorCombiner import PredictorCombiner
+
 
 class CheckList:
     def __init__(self, object: PredictorCombiner) -> None:
@@ -8,7 +10,7 @@ class CheckList:
 
     def add_object(self, object: Any):
         self.__object_list.append(object)
-        
+
     def remove_object(self, object: Any):
         self.__object_list.remove(object)
 

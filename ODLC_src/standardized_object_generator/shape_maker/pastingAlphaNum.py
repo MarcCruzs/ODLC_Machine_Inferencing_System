@@ -1,18 +1,14 @@
-import os
 import glob
-import shapesModule
+import os
+
 # Imports PIL module
 import PIL
+import shapesModule
 from PIL import (
     Image,
-    ImageDraw,
-    ImageColor,
-    ImageMorph,
-    ImageFilter,
-    ImagePath,
-    ImageFont,
 )
-import math
+
+
 def paste_letter_on_image(img, letter_img_path):
     # Load the letter image
     letter_img = Image.open(letter_img_path)
@@ -27,10 +23,8 @@ def paste_letter_on_image(img, letter_img_path):
 
     return img
 
- # Adjust this list to your actual paths
 
-
-
+# Adjust this list to your actual paths
 
 
 shapes = glob.glob(r"C:\Users\jcmis\Downloads\School\UAV Lab\shapes\*")
@@ -39,7 +33,6 @@ whiteLetters = glob.glob(r"C:\Users\jcmis\Downloads\School\UAV Lab\whiteLetters\
 
 for shape in shapes:
     for letter in whiteLetters:
-
         shapeName = os.path.basename(shape)
         shapeColor = shapeName[0:5]
 
@@ -61,9 +54,11 @@ for shape in shapes:
         # Compute paste position to center the letter on croppedImage
         paste_x = (croppedImage.width - new_width) // 2
         paste_y = (croppedImage.height - new_height) // 2
-        croppedImage.paste(letterImage, (paste_x, paste_y), letterImage)  # Using the alpha channel of letterImage for pasting
+        croppedImage.paste(
+            letterImage, (paste_x, paste_y), letterImage
+        )  # Using the alpha channel of letterImage for pasting
 
         croppedImage.save(f"D:/targetsWithAlphaNum/{shapeName}_{os.path.basename(letter)}")
 
 
-#print(os.path.basename(file))
+# print(os.path.basename(file))

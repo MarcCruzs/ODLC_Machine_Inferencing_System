@@ -1,5 +1,10 @@
-from PIL import Image, ImageDraw
-import time, os, random, datetime, string, math
+import datetime
+import os
+import random
+import string
+import time
+
+from PIL import Image
 
 start_time = time.time()
 
@@ -41,9 +46,7 @@ def get_scaling(name):
 
 
 def add_bounding_box(im, color, margin=5):
-    new_im = Image.new(
-        "RGBA", (im.size[0] + 2 * margin, im.size[1] + 2 * margin), (0, 0, 0, 0)
-    )
+    new_im = Image.new("RGBA", (im.size[0] + 2 * margin, im.size[1] + 2 * margin), (0, 0, 0, 0))
     new_im.paste(im, (margin, margin))
     w, h = new_im.size
 
@@ -127,14 +130,8 @@ for file in os.listdir(FG_PATH):
         new_bg.paste(new_fg, coords, new_fg)
         fg_center = (coords[0] + new_fg.size[0] / 2, coords[1] + new_fg.size[1] / 2)
         # generates unique image name
-        new_filename = (
-            rand_fg.split("/")[-1].split(".")[0]
-            + "_"
-            + rand_bg.split("/")[-1].split(".")[0]
-        )
-        coord_file = (
-            new_filename + "-" + str(rotation) + "_" + str(formatted_now) + ".txt"
-        )
+        new_filename = rand_fg.split("/")[-1].split(".")[0] + "_" + rand_bg.split("/")[-1].split(".")[0]
+        coord_file = new_filename + "-" + str(rotation) + "_" + str(formatted_now) + ".txt"
         new_filename += "-" + str(rotation) + "_" + str(formatted_now) + ".png"
         new_bg.save(
             f"/data03/home/jestrada2/synthetic_data_collection/unc_dataset/images/{new_filename}",
@@ -160,6 +157,4 @@ time_taken = end_time - start_time
 hours, remainder = divmod(time_taken, 3600)
 minutes, seconds = divmod(remainder, 60)
 
-print(
-    f"Time taken to complete: **{int(hours)} hours, {int(minutes)} minutes, {round(seconds, 2)} seconds**"
-)
+print(f"Time taken to complete: **{int(hours)} hours, {int(minutes)} minutes, {round(seconds, 2)} seconds**")

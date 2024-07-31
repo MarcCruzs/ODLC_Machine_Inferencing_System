@@ -13,14 +13,11 @@ select = ["E", "W", "F", "C", "D"]
 
 [tool.ruff]
 lint.select = ["E", "W", "F", "C", "D", "N", "I"]
-lint.ignore = ["D211", "D213", "ANN101", "E501"]  # Include ANN101 to avoid the conflict
+lint.ignore = ["D211", "D213", "ANN101", "E501"]
 line-length = 120
 exclude = [
-    "CFI_computation/test",
-    "CFI_computation/experimentation.py",
-    "CFI_computation/data_controller_test.py"
-]
+    "standardized_object_assets",
+    "targetsWithAlphaNum",
+    "testImages",
 
-[tool.mypy]
-files = "src"
-ignore_missing_imports = true
+]

@@ -1,5 +1,3 @@
-from abc import ABC, abstractmethod
-
 import Localization
 
 
@@ -12,4 +10,3 @@ class Georeferencing(Localization):
 
     def __georeference_object(GSD_scale, object_distance):
         return GSD_scale * object_distance
-

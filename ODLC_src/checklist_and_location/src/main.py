@@ -1,7 +1,5 @@
-from Georeferencing import GeoreferencingGSD
-from ObjectLocation import ObjectLocation
-from GroundSampleDistance import GroundSampleDistance
 from FetchAltitude import fetch_altitude_and_gps
+from GroundSampleDistance import GroundSampleDistance
 
 
 def main():
@@ -15,14 +13,10 @@ def main():
     sensor_height = 2
     pixel_size = 5
 
-    gsd_calculator = GroundSampleDistance(
-        cameraFocalLength, cameraFocalWidth, ImageWidth, ImageLength, altitude
-    )
+    gsd_calculator = GroundSampleDistance(cameraFocalLength, cameraFocalWidth, ImageWidth, ImageLength, altitude)
 
     # Calculate GSD
-    gsd = gsd_calculator.calculateGSD(
-        sensor_height=sensor_height, pixel_size=pixel_size
-    )
+    gsd = gsd_calculator.calculateGSD(sensor_height=sensor_height, pixel_size=pixel_size)
 
     print(f"Ground Sample Distance (GSD): {gsd:.4f} meters per pixel")
 

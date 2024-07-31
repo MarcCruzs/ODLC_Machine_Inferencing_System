@@ -1,6 +1,5 @@
 import os
 import re
-import shutil
 
 # Define your list of 8 regex patterns
 regex_patterns = [

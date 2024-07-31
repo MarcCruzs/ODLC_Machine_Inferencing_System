@@ -1,6 +1,3 @@
-import math
-
-
 class GroundSampleDistance:
     def __init__(
         self,
@@ -63,24 +60,24 @@ class GroundSampleDistance:
         self.__altitude = altitude
 
     def calculate_GSD(self, sensor_height: float, pixel_size: float) -> float:
-        """
-        Calculate the Ground Sample Distance (GSD) in meters per pixel.
+        """Calculate the Ground Sample Distance (GSD) in meters per pixel.
 
         Args:
+        ----
             sensor_height (float): Height of the sensor above ground level (in meters).
             focal_length (float): Focal length of the camera lens (in millimeters).
             pixel_size (float): Size of the camera sensor pixels (in micrometers).
             altitude (float): Altitude of the camera above ground level (in meters).
 
         Returns:
+        -------
             float: The Ground Sample Distance (GSD) in meters per pixel.
+
         """
         # Convert pixel size from micrometers to meters
         pixel_size_meters = pixel_size * 1e-6
 
         # Calculate GSD
-        gsd = (sensor_height * pixel_size_meters) / (
-            self.__cameraFocalLength / 1000 * self.__altitude
-        )
+        gsd = (sensor_height * pixel_size_meters) / (self.__cameraFocalLength / 1000 * self.__altitude)
 
         return gsd

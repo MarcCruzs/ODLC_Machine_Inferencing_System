@@ -1,5 +1,7 @@
-import PIL, math
-from PIL import Image, ImageDraw, ImageColor
+import math
+
+import PIL
+from PIL import Image, ImageColor, ImageDraw
 
 
 def createQuarterCircles(color):
@@ -19,7 +21,7 @@ def createQuarterCircles(color):
     # Line for the border on the flat side
     line_end = (w / 2 + radius_inner + 10, h / 2)
 
-    line_end2 = (w/2 -5, h -30 )
+    line_end2 = (w / 2 - 5, h - 30)
 
     # Creating new Image object
     img = Image.new("RGBA", (w, h))
@@ -28,94 +30,96 @@ def createQuarterCircles(color):
     draw = ImageDraw.Draw(img)
     draw.pieslice(shape_outer, start=0, end=90, fill="black")  # Border semicircle
     draw.pieslice(shape_inner, start=0, end=90, fill=color)  # Inner semicircle
-    
-    #horizontal line
-    draw.line(
-        [(491, 500), line_end], fill="black", width=10
-    )
 
-    #vertical line
-    draw.line(
-        [(495,500), line_end2], fill="black", width=10
-    )  
+    # horizontal line
+    draw.line([(491, 500), line_end], fill="black", width=10)
+
+    # vertical line
+    draw.line([(495, 500), line_end2], fill="black", width=10)
 
     img = img.resize((500, 500), 5)
-    img.save(f"shapes\{color}_quartercircle_bottom.png", quality=100)
+    img.save(rf"shapes\{color}_quartercircle_bottom.png", quality=100)
 
-    img2 = Image.new("RGBA", (w,h))
-    img2 = img.rotate(90, PIL.Image.NEAREST, expand = 1)
-    img2.save(f"shapes\{color}_quartercircle_right.png", quality=100)
+    img2 = Image.new("RGBA", (w, h))
+    img2 = img.rotate(90, PIL.Image.NEAREST, expand=1)
+    img2.save(rf"shapes\{color}_quartercircle_right.png", quality=100)
 
-    img3 = Image.new("RGBA", (w,h))
-    img3 = img.rotate(180, PIL.Image.NEAREST, expand = 1)
-    img3.save(f"shapes\{color}_quartercircle_top.png", quality=100)
+    img3 = Image.new("RGBA", (w, h))
+    img3 = img.rotate(180, PIL.Image.NEAREST, expand=1)
+    img3.save(rf"shapes\{color}_quartercircle_top.png", quality=100)
 
-    img4 = Image.new("RGBA", (w,h))
-    img4 = img.rotate(270, PIL.Image.NEAREST, expand = 1)
-    img4.save(f"shapes\{color}_quartercircle_left.png", quality=100)
+    img4 = Image.new("RGBA", (w, h))
+    img4 = img.rotate(270, PIL.Image.NEAREST, expand=1)
+    img4.save(rf"shapes\{color}_quartercircle_left.png", quality=100)
+
 
 def createSemiCircles(color):
     w, h = 1000, 1000
     radius_outer = 470  # Outermost radius for the border
     radius_inner = radius_outer - 10  # Radius for the inner semicircle
-    
+
     # Define the bounding boxes
-    shape_outer = [(w/2 - radius_outer, h/2 - radius_outer), (w/2 + radius_outer, h/2 + radius_outer)]
-    shape_inner = [(w/2 - radius_inner, h/2 - radius_inner), (w/2 + radius_inner, h/2 + radius_inner)]
+    shape_outer = [(w / 2 - radius_outer, h / 2 - radius_outer), (w / 2 + radius_outer, h / 2 + radius_outer)]
+    shape_inner = [(w / 2 - radius_inner, h / 2 - radius_inner), (w / 2 + radius_inner, h / 2 + radius_inner)]
 
     # Line for the border on the flat side
-    line_start = (w/2 - radius_inner -10, h/2)
-    line_end = (w/2 + radius_inner +10, h/2)
+    line_start = (w / 2 - radius_inner - 10, h / 2)
+    line_end = (w / 2 + radius_inner + 10, h / 2)
 
     # Creating new Image object
     img = Image.new("RGBA", (w, h))
-    
+
     # Drawing
     draw = ImageDraw.Draw(img)
-    draw.pieslice(shape_outer, start = 0, end = 180, fill="black")  # Border semicircle
-    draw.pieslice(shape_inner, start = 0, end = 180, fill=color)  # Inner semicircle
+    draw.pieslice(shape_outer, start=0, end=180, fill="black")  # Border semicircle
+    draw.pieslice(shape_inner, start=0, end=180, fill=color)  # Inner semicircle
     draw.line([line_start, line_end], fill="black", width=10)  # Line for the flat side's border
-    
+
     img = img.resize((500, 500), 5)
-    img.save(f"shapes\{color}_semicircle_bottom.png", quality=100)
+    img.save(rf"shapes\{color}_semicircle_bottom.png", quality=100)
 
-    img2 = Image.new("RGBA", (w,h))
-    img2 = img.rotate(90, PIL.Image.NEAREST, expand = 1)
-    img2.save(f"shapes\{color}_semicircle_right.png", quality=100)
+    img2 = Image.new("RGBA", (w, h))
+    img2 = img.rotate(90, PIL.Image.NEAREST, expand=1)
+    img2.save(rf"shapes\{color}_semicircle_right.png", quality=100)
 
-    img3 = Image.new("RGBA", (w,h))
-    img3 = img.rotate(180, PIL.Image.NEAREST, expand = 1)
-    img3.save(f"shapes\{color}_semicircle_top.png", quality=100)
+    img3 = Image.new("RGBA", (w, h))
+    img3 = img.rotate(180, PIL.Image.NEAREST, expand=1)
+    img3.save(rf"shapes\{color}_semicircle_top.png", quality=100)
 
-    img4 = Image.new("RGBA", (w,h))
-    img4 = img.rotate(270, PIL.Image.NEAREST, expand = 1)
-    img4.save(f"shapes\{color}_semicircle_left.png", quality=100)
-
-
+    img4 = Image.new("RGBA", (w, h))
+    img4 = img.rotate(270, PIL.Image.NEAREST, expand=1)
+    img4.save(rf"shapes\{color}_semicircle_left.png", quality=100)
 
 
 def createPolygon(color, sides):
     radius_outer = 490  # Radius for the outer (border) pentagon
     radius_inner = radius_outer - 10  # Radius for the inner pentagon
     cx, cy = 500, 500  # center of the canvas
-    
-    xy_outer = [(cx + radius_outer * math.cos(th), cy + radius_outer * math.sin(th)) for th in [i * (2 * math.pi) / sides for i in range(sides)]]
-    xy_inner = [(cx + radius_inner * math.cos(th), cy + radius_inner * math.sin(th)) for th in [i * (2 * math.pi) / sides for i in range(sides)]]
-    
+
+    xy_outer = [
+        (cx + radius_outer * math.cos(th), cy + radius_outer * math.sin(th))
+        for th in [i * (2 * math.pi) / sides for i in range(sides)]
+    ]
+    xy_inner = [
+        (cx + radius_inner * math.cos(th), cy + radius_inner * math.sin(th))
+        for th in [i * (2 * math.pi) / sides for i in range(sides)]
+    ]
+
     pentagon = Image.new("RGBA", (1000, 1000), (0, 0, 0, 0))
     draw = ImageDraw.Draw(pentagon)
     draw.polygon(xy_outer, fill="black")  # Drawing the border pentagon
-    draw.polygon(xy_inner, fill= color)  # Drawing the inner pentagon
-    
+    draw.polygon(xy_inner, fill=color)  # Drawing the inner pentagon
+
     pentagon = pentagon.resize((200, 200), 5)  # Using Image.LANCZOS for a higher-quality downscaling
-    pentagon = pentagon.rotate(90, PIL.Image.NEAREST, expand = 1)
+    pentagon = pentagon.rotate(90, PIL.Image.NEAREST, expand=1)
     return pentagon
+
 
 def createRectangle(color):
     rectangle = Image.new("RGBA", (1000, 1000), (0, 0, 0, 0))
 
     draw = ImageDraw.Draw(rectangle)
-# Draw the outermost black rectangle for the border
+    # Draw the outermost black rectangle for the border
     draw.rectangle((0, 0, 1000, 1000), fill="black")
 
     # Draw the inner rectangle with the given color, leaving a 20-pixel border
@@ -123,14 +127,16 @@ def createRectangle(color):
 
     return rectangle
 
+
 def createCircle(color):
     img = Image.new("RGBA", (1000, 1000), (0, 0, 0, 0))
 
     draw = ImageDraw.Draw(img)
     draw.ellipse([(0, 0), (1000, 1000)], fill="black")  # Outermost border
-    draw.ellipse([(10, 10), (990, 990)], fill=color)   # Inner circle leaving a 20-pixel wide border
+    draw.ellipse([(10, 10), (990, 990)], fill=color)  # Inner circle leaving a 20-pixel wide border
 
     return img
+
 
 def replace_white_with_color(image_path, replacement_color):
     # Load the image
@@ -140,27 +146,26 @@ def replace_white_with_color(image_path, replacement_color):
 
     # Define what we consider "white" (you can tweak these values)
     # The closer the threshold is to 255, the stricter the replacement will be
-    threshold = 245  
+    threshold = 245
 
     width, height = img.size
     for x in range(width):
         for y in range(height):
             r, g, b, a = img.getpixel((x, y))
             if r > threshold and g > threshold and b > threshold:
-                pixels[x, y] = newColor + (a,) 
+                pixels[x, y] = newColor + (a,)
 
     return img
 
+
 def crop_transparent(img):
-    """
-    Crop the transparent borders from an image and return the cropped image.
-    """
+    """Crop the transparent borders from an image and return the cropped image."""
     # Convert the image to RGBA if it's not already
     img = img.convert("RGBA")
-    
+
     # Get the pixels of the image as a list
     datas = img.getdata()
-    
+
     # Lists to store non-transparent pixel coordinates
     non_transparent_xs = []
     non_transparent_ys = []
@@ -179,4 +184,3 @@ def crop_transparent(img):
     cropped_img = img.crop(box)
 
     return cropped_img
-

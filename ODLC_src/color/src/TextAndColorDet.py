@@ -1,10 +1,10 @@
-from PIL import Image
-import matplotlib.pyplot as plt
-import cv2
-import time
-
 # built-in python library for writing cmd scripts
 import argparse
+import time
+
+import cv2
+import matplotlib.pyplot as plt
+from PIL import Image
 
 COLORS = {
     "red": (172, 0, 0),
@@ -23,20 +23,20 @@ def display_rgb_image(img: Image) -> None:
     Simplifies the overall thing to a one-liner
 
     Args:
+    ----
         img (Image): PIL Image or OpenCV Image converted to rgb format (default is bgr)
+
     """
     plt.imshow(img)
     plt.axis("off")
     plt.show()
 
 
-def adjust_contrast_brightness(
-    img: Image, contrast: float = 1.0, brightness: int = 0
-) -> Image:
-    """
-    Adjusts the contrast and brightness of a PIL or converted OpenCV image.
+def adjust_contrast_brightness(img: Image, contrast: float = 1.0, brightness: int = 0) -> Image:
+    """Adjusts the contrast and brightness of a PIL or converted OpenCV image.
 
     Args:
+    ----
         img (Image): The input image.
         contrast (float): The contrast adjustment factor. A value of 1.0 leaves the contrast as is.
             Values greater than 1.0 increase the contrast, while values less than 1.0 decrease the contrast.
@@ -44,7 +44,9 @@ def adjust_contrast_brightness(
             Values greater than 0 increase the brightness, while values less than 0 decrease the brightness.
 
     Returns:
+    -------
         Image: The adjusted image.
+
     """
     brightness += int(round(255 * (1 - contrast) / 2))
     return cv2.addWeighted(img, contrast, img, 0, brightness)
@@ -57,10 +59,13 @@ def closest_color(requested_color: list) -> str:
     on a pre-defined list of SUAS-allowed colors.
 
     Args:
+    ----
         requested_color (list): RGB value
 
     Returns:
+    -------
         String: Corresponding color name for the RGB value
+
     """
     min_colors = {}
     for color_name, color_rgb in COLORS.items():
@@ -72,9 +77,7 @@ def closest_color(requested_color: list) -> str:
 
 
 parser = argparse.ArgumentParser(description="Process an Image file.")
-parser.add_argument(
-    "ImagePath", metavar="path", type=str, help="the path to an image file"
-)
+parser.add_argument("ImagePath", metavar="path", type=str, help="the path to an image file")
 args = parser.parse_args()
 
 if args.ImagePath is None:

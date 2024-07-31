@@ -1,7 +1,9 @@
-import cv2
+import argparse
 import os
 import uuid
-import argparse
+
+import cv2
+
 
 class Camera:
     def __init__(self, camera_device):
@@ -26,7 +28,7 @@ class Camera:
 
     def save_to_folders(self, image, folder1, folder2):
         filename = str(uuid.uuid4()) + ".jpg"
-        
+
         if not os.path.exists(folder1):
             os.makedirs(folder1)
         if not os.path.exists(folder2):
@@ -45,11 +47,17 @@ class Camera:
         self.cap.release()
         print("Camera released.")
 
+
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Process camera device and folder paths')
-    parser.add_argument('--camera_device', type=int, default=int(os.getenv('CAMERA_DEVICE', 0)), help='Camera device index (e.g., 0, 1, 2) for windows. Camera pathway (i.g. /dev/video0) for linux.')
-    parser.add_argument('--folder1', default='./Folder1', help='Path to folder1')
-    parser.add_argument('--folder2', default='./Folder2', help='Path to folder2')
+    parser = argparse.ArgumentParser(description="Process camera device and folder paths")
+    parser.add_argument(
+        "--camera_device",
+        type=int,
+        default=int(os.getenv("CAMERA_DEVICE", 0)),
+        help="Camera device index (e.g., 0, 1, 2) for windows. Camera pathway (i.g. /dev/video0) for linux.",
+    )
+    parser.add_argument("--folder1", default="./Folder1", help="Path to folder1")
+    parser.add_argument("--folder2", default="./Folder2", help="Path to folder2")
     args = parser.parse_args()
 
     try:

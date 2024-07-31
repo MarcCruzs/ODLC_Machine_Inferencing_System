@@ -1,16 +1,11 @@
-import shapesModule
-import os
 import glob
-import PIL
+import os
+
 from PIL import (
     Image,
-    ImageDraw,
     ImageColor,
-    ImageMorph,
-    ImageFilter,
-    ImagePath,
-    ImageFont,
 )
+
 
 def replace_color(image_path, target_color="black", replacement_color="white"):
     # Convert colors to RGB tuples
@@ -30,15 +25,15 @@ def replace_color(image_path, target_color="black", replacement_color="white"):
 
     return img
 
+
 lettersFilePath = glob.glob(r"C:\Users\jcmis\Downloads\School\UAV Lab\letters\*")
 
 
 for letter in lettersFilePath:
     letterFileName = os.path.basename(letter)
 
-    whiteLetter = replace_color(letter, "black","white")
-    whiteLetter.save(f"whiteLetters\{letterFileName}")
+    whiteLetter = replace_color(letter, "black", "white")
+    whiteLetter.save(rf"whiteLetters\{letterFileName}")
 
 
-
-#print(os.path.basename(file))
+# print(os.path.basename(file))

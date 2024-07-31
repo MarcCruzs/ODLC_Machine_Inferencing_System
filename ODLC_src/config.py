@@ -1,1 +1,1 @@
-PORT = 'COM7'
+PORT = "COM7"

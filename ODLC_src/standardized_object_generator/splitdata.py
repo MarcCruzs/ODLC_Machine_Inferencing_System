@@ -22,12 +22,8 @@ for pattern in regex_patterns:
     regex = re.compile(pattern)
 
     # Get a list of all files in the current directory
-    current_directory = (
-        "/data03/home/jestrada2/synthetic_data_collection/unc_dataset/images"
-    )
-    label_directory = (
-        "/data03/home/jestrada2/synthetic_data_collection/unc_dataset/labels"
-    )
+    current_directory = "/data03/home/jestrada2/synthetic_data_collection/unc_dataset/images"
+    label_directory = "/data03/home/jestrada2/synthetic_data_collection/unc_dataset/labels"
     all_files = os.listdir(current_directory)
     print(len(all_files))
 
@@ -49,9 +45,7 @@ for pattern in regex_patterns:
         source_label = os.path.join(label_directory, curr_file.replace(".png", ".txt"))
 
         dest_img = os.path.join(target_directory, "train", "images", curr_file)
-        dest_label = os.path.join(
-            target_directory, "train", "labels", curr_file.replace(".png", ".txt")
-        )
+        dest_label = os.path.join(target_directory, "train", "labels", curr_file.replace(".png", ".txt"))
         shutil.move(source_img, dest_img)
         shutil.move(source_label, dest_label)
 
@@ -62,9 +56,7 @@ for pattern in regex_patterns:
         source_label = os.path.join(label_directory, curr_file.replace(".png", ".txt"))
 
         dest_img = os.path.join(target_directory, "test", "images", curr_file)
-        dest_label = os.path.join(
-            target_directory, "test", "labels", curr_file.replace(".png", ".txt")
-        )
+        dest_label = os.path.join(target_directory, "test", "labels", curr_file.replace(".png", ".txt"))
         shutil.move(source_img, dest_img)
         shutil.move(source_label, dest_label)
 
@@ -75,9 +67,7 @@ for pattern in regex_patterns:
         source_label = os.path.join(label_directory, curr_file.replace(".png", ".txt"))
 
         dest_img = os.path.join(target_directory, "val", "images", curr_file)
-        dest_label = os.path.join(
-            target_directory, "val", "labels", curr_file.replace(".png", ".txt")
-        )
+        dest_label = os.path.join(target_directory, "val", "labels", curr_file.replace(".png", ".txt"))
         shutil.move(source_img, dest_img)
         shutil.move(source_label, dest_label)
 

@@ -1,8 +1,9 @@
 import requests
 
+
 def fetch_altitude_and_gps():
     try:
-        response = requests.get('http://telemetry_module:5000/gps')
+        response = requests.get("http://telemetry_module:5000/gps")
         if response.status_code == 200:
             data = response.json()
             altitude = data.get("altitude")

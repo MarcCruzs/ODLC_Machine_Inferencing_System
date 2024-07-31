@@ -1,15 +1,12 @@
 # Imports PIL module
+import math
+
 import PIL
 from PIL import (
     Image,
-    ImageDraw,
     ImageColor,
-    ImageMorph,
-    ImageFilter,
-    ImagePath,
-    ImageFont,
+    ImageDraw,
 )
-import math
 
 
 def createRectangle(color):
@@ -20,7 +17,7 @@ def createRectangle(color):
     draw.rectangle((0, 0, 1000, 1000), fill=(color), outline=("black"))
 
     rectangle = rectangle.resize((200, 200), 5)
-    rectangle.save(f"testImages/rectangleTest.png", quality=95)
+    rectangle.save("testImages/rectangleTest.png", quality=95)
     rectangle.show()
     return rectangle
 
@@ -44,11 +41,9 @@ def createPolygon(color, sides):
     draw.polygon(xy_outer, fill="black")  # Drawing the border pentagon
     draw.polygon(xy_inner, fill=color)  # Drawing the inner pentagon
 
-    img = img.resize(
-        (200, 200), Image.LANCZOS
-    )  # Using Image.LANCZOS for a higher-quality downscaling
+    img = img.resize((200, 200), Image.LANCZOS)  # Using Image.LANCZOS for a higher-quality downscaling
     img = img.rotate(90, PIL.Image.NEAREST, expand=1)
-    img.save(f"testImages/pentagonTest.png", quality=95)
+    img.save("testImages/pentagonTest.png", quality=95)
     img.show()
 
 
@@ -98,9 +93,7 @@ def createSemiCircle():
     draw = ImageDraw.Draw(img)
     draw.pieslice(shape_outer, start=0, end=180, fill="black")  # Border semicircle
     draw.pieslice(shape_inner, start=0, end=180, fill="red")  # Inner semicircle
-    draw.line(
-        [line_start, line_end], fill="black", width=20
-    )  # Line for the flat side's border
+    draw.line([line_start, line_end], fill="black", width=20)  # Line for the flat side's border
 
     img.show()
 
@@ -134,7 +127,7 @@ def createQuarterCircles():
     # Line for the border on the flat side
     line_end = (w / 2 + radius_inner + 10, h / 2)
 
-    line_end2 = (w/2 -5, h -30 )
+    line_end2 = (w / 2 - 5, h - 30)
 
     # Creating new Image object
     img = Image.new("RGBA", (w, h))
@@ -143,16 +136,12 @@ def createQuarterCircles():
     draw = ImageDraw.Draw(img)
     draw.pieslice(shape_outer, start=0, end=90, fill="black")  # Border semicircle
     draw.pieslice(shape_inner, start=0, end=90, fill="red")  # Inner semicircle
-    
-    #horizontal line
-    draw.line(
-        [(491, 500), line_end], fill="black", width=10
-    )
 
-    #vertical line
-    draw.line(
-        [(495,500), line_end2], fill="black", width=10
-    )  
+    # horizontal line
+    draw.line([(491, 500), line_end], fill="black", width=10)
+
+    # vertical line
+    draw.line([(495, 500), line_end2], fill="black", width=10)
 
     img.show()
 
