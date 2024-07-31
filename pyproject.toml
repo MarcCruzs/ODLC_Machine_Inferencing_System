@@ -1,0 +1,26 @@
+[tool.black]
+line-length = 120
+skip-string-normalization = true
+
+[tool.isort]
+profile = "black"
+line_length = 120
+
+[tool.flake8]
+max-line-length = 120
+extend-ignore = ["E203", "W503"]
+select = ["E", "W", "F", "C", "D"]
+
+[tool.ruff]
+lint.select = ["E", "W", "F", "C", "D", "N", "I"]
+lint.ignore = ["D211", "D213", "ANN101", "E501"]  # Include ANN101 to avoid the conflict
+line-length = 120
+exclude = [
+    "CFI_computation/test",
+    "CFI_computation/experimentation.py",
+    "CFI_computation/data_controller_test.py"
+]
+
+[tool.mypy]
+files = "src"
+ignore_missing_imports = true
