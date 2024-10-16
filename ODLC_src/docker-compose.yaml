@@ -1,0 +1,93 @@
+version: '3'
+services:
+  telemetry:
+    build:
+      context: ./telemetry
+      dockerfile: Dockerfile
+    container_name: telemetry_module
+    image: telemetry-image
+    volumes:
+      - status:/usr/app/status
+      - checklist:/usr/app/checklist
+    ports:
+      - "5000:5000"
+    command: ["./start_telemetry.sh"]
+
+  camera:
+    build:
+      context: ./camera
+      dockerfile: Dockerfile
+    container_name: camera_module
+    image: camera-image
+    depends_on:
+      - telemetry
+    volumes:
+      - raw:/usr/app/src/folder1
+      - data:/usr/app/src/folder2
+      - status:/usr/app/status
+    devices:
+      - "/dev/video0:/dev/video0"
+    environment:
+      - CAMERA_DEVICE=/dev/video0
+    command: ["./src/entrypoint.sh"]
+
+  shape_human:
+    build:
+      context: ./shape_human
+      dockerfile: Dockerfile
+    depends_on:
+      - camera
+    container_name: human_model
+    image: shape_human-image
+    volumes:
+      - raw:/usr/app/raw_images
+      - cropped:/usr/app/src/images
+      - status:/usr/app/status
+    command: ["./src/entrypoint.sh"]
+
+  color:
+    build:
+      context: ./color
+      dockerfile: Dockerfile
+    depends_on:
+      - shape_human
+    container_name: color_model
+    image: color-image
+    volumes:
+      - cropped:/usr/app/src/images
+      - status:/usr/app/status
+    command: ["./src/entrypoint.sh"]
+
+  alphanumeric:
+    build:
+      context: ./alphanumeric
+      dockerfile: Dockerfile
+    depends_on:
+      - color
+    container_name: text_model
+    image: alphanumeric-image
+    volumes:
+      - cropped:/usr/app/src/images
+      - checklist:/usr/app/checklist
+      - status:/usr/app/status
+    command: ["./src/entrypoint.sh"]
+  
+  checklist_and_location:
+    depends_on:
+      - alphanumeric
+    build:
+      context: ./checklist_and_location
+      dockerfile: Dockerfile
+    container_name: checklist_and_location_module
+    image: checklist_and_location-image
+    volumes:
+      - checklist:/usr/app/checklist
+      - status:/usr/app/status
+    command: ["./src/entrypoint.sh"]
+
+volumes:
+  raw:
+  cropped:
+  data:
+  status:
+  checklist:
