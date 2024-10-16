@@ -1,0 +1,7 @@
+train: ../dataset/train
+val: ../dataset/val
+test: ../dataset/test
+
+nc: 8
+
+names: ["", "", "", "", "", "", "", "Circle"]
