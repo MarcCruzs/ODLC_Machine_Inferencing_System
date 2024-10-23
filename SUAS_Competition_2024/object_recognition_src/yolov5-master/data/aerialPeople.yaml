@@ -1,0 +1,6 @@
+train: C:/Users/jcmis/Downloads/School/UAV Lab/GitRepo/SUAS_Competiton/SUAS_Competition_2024/object_recognition_src/yolov5-master/data/train/images
+val: C:/Users/jcmis/Downloads/School/UAV Lab/GitRepo/SUAS_Competiton/SUAS_Competition_2024/object_recognition_src/yolov5-master/data/valid/images
+# test: ../test/images
+
+nc: 1
+names: ["person"]
